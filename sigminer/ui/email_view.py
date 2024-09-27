@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QInputDialog,
     QScrollArea,
+    QListWidget,
+    QLineEdit,
 )
 from sigminer.core.email.email_manager import EmailManager
 from sigminer.ui.field_form_view import FieldFormView
@@ -21,6 +23,9 @@ class EmailView(QWidget):
         self.access_token = access_token
         self.config_manager = ConfigManager()
         self.field_forms = []
+        self.excluded_hosts = []  # Liste des domaines à exclure
+        self.include_mode = True  # Par défaut, "include" mode
+
         self.original_preset_hash = None  # Stocke le hash du preset chargé
         self.init_ui()
 
@@ -53,6 +58,28 @@ class EmailView(QWidget):
         # Set maximum height for scroll area to avoid full overflow
         scroll_area.setFixedHeight(300)
 
+        # Section pour la liste des domaines d'e-mails à exclure
+        layout.addWidget(QLabel("Excluded email hosts (double-click to delete):"))
+
+        self.excluded_hosts_input = QLineEdit(self)
+        self.excluded_hosts_input.setPlaceholderText(
+            "Enter email host (e.g., gmail.com)"
+        )
+        self.excluded_hosts_input.returnPressed.connect(self.add_excluded_host)
+        layout.addWidget(self.excluded_hosts_input)
+
+        self.excluded_hosts_list = QListWidget(self)
+        self.excluded_hosts_list.itemDoubleClicked.connect(
+            self.remove_excluded_host
+        )  # Ajout d'un signal pour double-clic
+        layout.addWidget(self.excluded_hosts_list)
+
+        # Switch pour indiquer si la liste de hosts est à inclure ou à exclure
+        self.host_mode_switch = QComboBox(self)
+        self.host_mode_switch.addItems(["Include Hosts", "Exclude Hosts"])
+        self.host_mode_switch.currentIndexChanged.connect(self.on_field_modified)
+        layout.addWidget(self.host_mode_switch)
+
         # Bouton pour sauvegarder un preset (initialement caché)
         self.save_preset_button = QPushButton("Save Preset", self)
         self.save_preset_button.clicked.connect(self.save_preset)
@@ -82,7 +109,7 @@ class EmailView(QWidget):
         self.fields_layout.addWidget(field_form)
         self.field_forms.append(field_form)
 
-        # Connecter les signaux pour détecter les modifications des champs
+        # Connect signals for field modification
         field_form.field_name_input.textChanged.connect(self.on_field_modified)
         field_form.guideline_input.textChanged.connect(self.on_field_modified)
         field_form.type_selector.currentIndexChanged.connect(self.on_field_modified)
@@ -95,8 +122,31 @@ class EmailView(QWidget):
         self.field_forms.remove(field_form)
         self.update_save_preset_button_visibility()
 
+    def add_excluded_host(self):
+        host = self.excluded_hosts_input.text().strip()
+        if host and host not in self.excluded_hosts:
+            self.excluded_hosts.append(host)
+            self.excluded_hosts_list.addItem(host)
+            self.excluded_hosts_input.clear()
+            self.on_field_modified()
+
+    def remove_excluded_host(self, item):
+        # Suppression du domaine exclu lors du double-clic
+        host = item.text()
+        if host in self.excluded_hosts:
+            self.excluded_hosts.remove(host)
+            self.excluded_hosts_list.takeItem(self.excluded_hosts_list.row(item))
+            self.on_field_modified()
+
     def save_preset(self):
         fields = [field_form.get_field_data() for field_form in self.field_forms]
+        include_mode = self.host_mode_switch.currentIndex() == 0
+
+        preset_data = {
+            "fields": fields,
+            "excluded_hosts": self.excluded_hosts,
+            "include_mode": include_mode,
+        }
 
         current_preset_name = self.preset_selector.currentText()
         if current_preset_name == "Select preset":
@@ -107,10 +157,8 @@ class EmailView(QWidget):
         )
 
         if ok and preset_name:
-            self.config_manager.save_preset(preset_name, fields)
-            self.original_preset_hash = self.get_fields_hash(
-                fields
-            )  # Mise à jour du hash
+            self.config_manager.save_preset(preset_name, preset_data)
+            self.original_preset_hash = self.get_preset_hash(preset_data)  # Update hash
             self.update_preset_selector(preset_name)
             self.update_save_preset_button_visibility()
 
@@ -142,19 +190,33 @@ class EmailView(QWidget):
             self.config_manager.delete_preset(preset_name)
             self.preset_selector.removeItem(self.preset_selector.currentIndex())
             self.clear_field_forms()
+            self.excluded_hosts_list.clear()
             self.update_delete_button_visibility()
 
     def load_preset(self, preset_name):
         if preset_name != "Select preset":
-            fields = self.config_manager.get_preset(preset_name)
+            preset_data = self.config_manager.get_preset(preset_name)
             self.clear_field_forms()
-            for field in fields:
+
+            # Charger les champs d'extraction
+            for field in preset_data.get("fields", []):
                 self.add_field_form(
                     field["field_name"], field["guideline"], field["type"]
                 )
-            self.original_preset_hash = self.get_fields_hash(
-                fields
-            )  # Store the hash of loaded preset
+
+            # Charger les domaines d'emails
+            self.excluded_hosts = preset_data.get("excluded_hosts", [])
+            self.excluded_hosts_list.clear()
+            for host in self.excluded_hosts:
+                self.excluded_hosts_list.addItem(host)
+
+            # Charger l'état du switch
+            self.host_mode_switch.setCurrentIndex(
+                0 if preset_data.get("include_mode", True) else 1
+            )
+
+            self.original_preset_hash = self.get_preset_hash(preset_data)
+
         self.update_save_preset_button_visibility()
 
     def clear_field_forms(self):
@@ -165,14 +227,23 @@ class EmailView(QWidget):
     def extract_emails(self):
         try:
             email_manager = EmailManager(self.access_token)
-            emails = email_manager.get_emails()
+            emails = email_manager.get_emails(
+                excluded_hosts=self.excluded_hosts
+            )  # Exclure les emails
             self.result_label.setText(f"{len(emails)} emails extracted.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to extract emails: {e}")
 
     def update_save_preset_button_visibility(self):
         fields = [field_form.get_field_data() for field_form in self.field_forms]
-        current_hash = self.get_fields_hash(fields)
+        include_mode = self.host_mode_switch.currentIndex() == 0
+
+        preset_data = {
+            "fields": fields,
+            "excluded_hosts": self.excluded_hosts,
+            "include_mode": include_mode,
+        }
+        current_hash = self.get_preset_hash(preset_data)
         if len(self.field_forms) > 0 and current_hash != self.original_preset_hash:
             self.save_preset_button.show()
         else:
@@ -181,9 +252,9 @@ class EmailView(QWidget):
     def on_field_modified(self):
         self.update_save_preset_button_visibility()
 
-    def get_fields_hash(self, fields):
-        fields_string = json.dumps(fields, sort_keys=True)
-        return hashlib.md5(fields_string.encode()).hexdigest()
+    def get_preset_hash(self, preset_data):
+        preset_string = json.dumps(preset_data, sort_keys=True)
+        return hashlib.md5(preset_string.encode()).hexdigest()
 
     def update_delete_button_visibility(self):
         if self.preset_selector.currentText() == "Select preset":

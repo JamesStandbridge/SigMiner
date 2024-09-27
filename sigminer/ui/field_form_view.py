@@ -27,14 +27,14 @@ class FieldFormView(QWidget):
 
     def init_ui(self, field_name, guideline, field_type):
         layout = QVBoxLayout()
-        layout.setSpacing(5)
+        layout.setSpacing(10)
 
         # Champ pour le nom du champ
         self.field_name_input = QLineEdit(self)
         self.field_name_input.setPlaceholderText("Field Name")
         self.field_name_input.setText(field_name)
         field_name_layout = QVBoxLayout()
-        field_name_layout.setSpacing(0)  # Reduce space between label and input
+        field_name_layout.setSpacing(5)  # Reduce space between label and input
         field_name_layout.addWidget(QLabel("Field Name:"))
         field_name_layout.addWidget(self.field_name_input)
         layout.addLayout(field_name_layout)
@@ -44,7 +44,7 @@ class FieldFormView(QWidget):
         self.guideline_input.setPlaceholderText("Guideline")
         self.guideline_input.setText(guideline)
         guideline_layout = QVBoxLayout()
-        guideline_layout.setSpacing(0)  # Reduce space between label and input
+        guideline_layout.setSpacing(5)  # Reduce space between label and input
         guideline_layout.addWidget(QLabel("Guideline:"))
         guideline_layout.addWidget(self.guideline_input)
         layout.addLayout(guideline_layout)
@@ -54,7 +54,7 @@ class FieldFormView(QWidget):
         self.type_selector.addItems(["TEXT", "INT", "BOOLEAN", "select"])
         self.type_selector.setCurrentText(field_type)
         type_layout = QVBoxLayout()
-        type_layout.setSpacing(0)  # Reduce space between label and input
+        type_layout.setSpacing(5)  # Reduce space between label and input
         type_layout.addWidget(QLabel("Type:"))
         type_layout.addWidget(self.type_selector)
         layout.addLayout(type_layout)

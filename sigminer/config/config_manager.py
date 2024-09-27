@@ -36,8 +36,8 @@ class ConfigManager:
     def get_tenant_id(self):
         return self.config.get("TENANT_ID")
 
-    def save_preset(self, preset_name, fields):
-        self.config[preset_name] = fields
+    def save_preset(self, preset_name, preset_data):
+        self.config[preset_name] = preset_data
         self.save_config()
 
     def get_preset(self, preset_name):
