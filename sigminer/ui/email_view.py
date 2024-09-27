@@ -24,7 +24,7 @@ class EmailView(QWidget):
         self.config_manager = ConfigManager()
         self.field_forms = []
         self.excluded_hosts = []  # Liste des domaines à exclure
-        self.include_mode = True  # Par défaut, "include" mode
+        self.include_mode = False  # Par défaut, "include" mode
 
         self.original_preset_hash = None  # Stocke le hash du preset chargé
         self.init_ui()
@@ -59,7 +59,8 @@ class EmailView(QWidget):
         scroll_area.setFixedHeight(300)
 
         # Section pour la liste des domaines d'e-mails à exclure
-        layout.addWidget(QLabel("Excluded email hosts (double-click to delete):"))
+        self.hosts_label = QLabel("Excluded email hosts (double-click to delete):")
+        layout.addWidget(self.hosts_label)
 
         self.excluded_hosts_input = QLineEdit(self)
         self.excluded_hosts_input.setPlaceholderText(
@@ -77,7 +78,8 @@ class EmailView(QWidget):
         # Switch pour indiquer si la liste de hosts est à inclure ou à exclure
         self.host_mode_switch = QComboBox(self)
         self.host_mode_switch.addItems(["Include Hosts", "Exclude Hosts"])
-        self.host_mode_switch.currentIndexChanged.connect(self.on_field_modified)
+        self.host_mode_switch.setCurrentIndex(0 if self.include_mode else 1)
+        self.host_mode_switch.currentIndexChanged.connect(self.on_host_mode_changed)
         layout.addWidget(self.host_mode_switch)
 
         # Bouton pour sauvegarder un preset (initialement caché)
@@ -214,6 +216,7 @@ class EmailView(QWidget):
             self.host_mode_switch.setCurrentIndex(
                 0 if preset_data.get("include_mode", True) else 1
             )
+            self.update_hosts_label()
 
             self.original_preset_hash = self.get_preset_hash(preset_data)
 
@@ -261,3 +264,13 @@ class EmailView(QWidget):
             self.delete_preset_button.hide()
         else:
             self.delete_preset_button.show()
+
+    def on_host_mode_changed(self):
+        self.on_field_modified()
+        self.update_hosts_label()
+
+    def update_hosts_label(self):
+        if self.host_mode_switch.currentIndex() == 0:
+            self.hosts_label.setText("Included email hosts (double-click to delete):")
+        else:
+            self.hosts_label.setText("Excluded email hosts (double-click to delete):")
