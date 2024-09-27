@@ -3,10 +3,11 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QLineEdit,
-    QComboBox,
     QPushButton,
     QHBoxLayout,
+    QFrame,
 )
+from PyQt5.QtGui import QFont
 
 
 class FieldFormView(QWidget):
@@ -15,19 +16,46 @@ class FieldFormView(QWidget):
         remove_callback,
         field_name="",
         guideline="",
-        field_type="TEXT",
     ):
-        # print(remove_callback)
-        # print(field_name)
-        # print(guideline)
-        # print(field_type)
         super().__init__()
         self.remove_callback = remove_callback
-        self.init_ui(field_name, guideline, field_type)
+        self.init_ui(field_name, guideline)
 
-    def init_ui(self, field_name, guideline, field_type):
+    def init_ui(self, field_name, guideline):
         layout = QVBoxLayout()
         layout.setSpacing(10)
+
+        # Cadre autour du field form view
+        frame = QFrame(self)
+        frame.setFrameShape(QFrame.Box)
+        frame.setLineWidth(1)  # Make the border of the frame lighter
+        frame.setObjectName("fieldFrame")
+        frame.setStyleSheet("#fieldFrame { border: 1px solid #d4d4d4; }")
+        frame_layout = QVBoxLayout(frame)
+        frame_layout.setSpacing(10)
+
+        # Bouton de suppression avec une petite croix en haut à droite du cadre
+        remove_button = QPushButton("x", self)
+        remove_button.setFont(QFont("Arial", 12, QFont.Bold))
+
+        remove_button.setStyleSheet(
+            """
+            QPushButton {
+                padding: 1px 5px 3px 5px;
+                border: none;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #FF0000;
+                color: white;
+            }
+        """
+        )
+        remove_button.clicked.connect(self.remove_field)
+        button_layout = QHBoxLayout()
+        button_layout.addStretch()
+        button_layout.addWidget(remove_button)
+        frame_layout.addLayout(button_layout)
 
         # Champ pour le nom du champ
         self.field_name_input = QLineEdit(self)
@@ -37,7 +65,7 @@ class FieldFormView(QWidget):
         field_name_layout.setSpacing(5)  # Reduce space between label and input
         field_name_layout.addWidget(QLabel("Field Name:"))
         field_name_layout.addWidget(self.field_name_input)
-        layout.addLayout(field_name_layout)
+        frame_layout.addLayout(field_name_layout)
 
         # Champ pour la guideline
         self.guideline_input = QLineEdit(self)
@@ -47,23 +75,9 @@ class FieldFormView(QWidget):
         guideline_layout.setSpacing(5)  # Reduce space between label and input
         guideline_layout.addWidget(QLabel("Guideline:"))
         guideline_layout.addWidget(self.guideline_input)
-        layout.addLayout(guideline_layout)
+        frame_layout.addLayout(guideline_layout)
 
-        # Sélecteur pour le type de champ
-        self.type_selector = QComboBox(self)
-        self.type_selector.addItems(["TEXT", "INT", "BOOLEAN", "select"])
-        self.type_selector.setCurrentText(field_type)
-        type_layout = QVBoxLayout()
-        type_layout.setSpacing(5)  # Reduce space between label and input
-        type_layout.addWidget(QLabel("Type:"))
-        type_layout.addWidget(self.type_selector)
-        layout.addLayout(type_layout)
-
-        # Bouton de suppression
-        remove_button = QPushButton("Remove Field", self)
-        remove_button.clicked.connect(self.remove_field)
-        layout.addWidget(remove_button)
-
+        layout.addWidget(frame)
         self.setLayout(layout)
 
     def remove_field(self):
@@ -73,5 +87,4 @@ class FieldFormView(QWidget):
         return {
             "field_name": self.field_name_input.text(),
             "guideline": self.guideline_input.text(),
-            "type": self.type_selector.currentText(),
         }

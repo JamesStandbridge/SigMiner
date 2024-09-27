@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['sigminer/core/app/app.py'],
+    ['sigminer/app.py'],
     pathex=[],
     binaries=[],
     datas=[],

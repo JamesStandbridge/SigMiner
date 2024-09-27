@@ -3,6 +3,7 @@ import json
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
+    QHBoxLayout,
     QPushButton,
     QLabel,
     QComboBox,
@@ -11,8 +12,12 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QListWidget,
     QLineEdit,
+    QFileDialog,
+    QFrame,
 )
-from sigminer.core.email.email_manager import EmailManager
+from PyQt5.QtGui import QFont
+
+from sigminer.ui.extraction_view import ExtractionView
 from sigminer.ui.field_form_view import FieldFormView
 from sigminer.config.config_manager import ConfigManager
 
@@ -32,18 +37,28 @@ class EmailView(QWidget):
     def init_ui(self):
         layout = QVBoxLayout()
 
+        # Scroll area for the entire layout
+        main_scroll_area = QScrollArea(self)
+        main_scroll_area.setWidgetResizable(True)
+        main_container = QWidget()
+        main_layout = QVBoxLayout(main_container)
+        main_scroll_area.setWidget(main_container)
+        layout.addWidget(main_scroll_area)
+
+        # Set maximum height for the main scroll area
+        main_scroll_area.setFixedHeight(600)
+
         # Sélection des presets
         self.preset_selector = QComboBox(self)
         self.preset_selector.addItems(
             ["Select preset"] + self.config_manager.get_all_presets()
         )
         self.preset_selector.currentTextChanged.connect(self.load_preset)
-        layout.addWidget(self.preset_selector)
+        main_layout.addWidget(self.preset_selector)
 
-        # Bouton pour ajouter un champ
-        self.add_field_button = QPushButton("Add Field", self)
-        self.add_field_button.clicked.connect(lambda: self.add_field_form())
-        layout.addWidget(self.add_field_button)
+        # Label to indicate fields to extract from emails
+        self.fields_label = QLabel("Fields to extract from emails:")
+        main_layout.addWidget(self.fields_label)
 
         # Scroll area for fields
         scroll_area = QScrollArea(self)
@@ -53,60 +68,176 @@ class EmailView(QWidget):
         fields_container = QWidget()
         self.fields_layout = QVBoxLayout(fields_container)
         scroll_area.setWidget(fields_container)
-        layout.addWidget(scroll_area)
+        main_layout.addWidget(scroll_area)
 
         # Set maximum height for scroll area to avoid full overflow
         scroll_area.setFixedHeight(300)
+        # Bouton pour ajouter un champ
+        self.add_field_button = QPushButton("Add Field", self)
+        self.add_field_button.clicked.connect(lambda: self.add_field_form())
+        main_layout.addWidget(self.add_field_button)
 
         # Section pour la liste des domaines d'e-mails à exclure
         self.hosts_label = QLabel("Excluded email hosts (double-click to delete):")
-        layout.addWidget(self.hosts_label)
+        main_layout.addWidget(self.hosts_label)
 
         self.excluded_hosts_input = QLineEdit(self)
         self.excluded_hosts_input.setPlaceholderText(
             "Enter email host (e.g., gmail.com)"
         )
         self.excluded_hosts_input.returnPressed.connect(self.add_excluded_host)
-        layout.addWidget(self.excluded_hosts_input)
+        main_layout.addWidget(self.excluded_hosts_input)
 
         self.excluded_hosts_list = QListWidget(self)
         self.excluded_hosts_list.itemDoubleClicked.connect(
             self.remove_excluded_host
         )  # Ajout d'un signal pour double-clic
-        layout.addWidget(self.excluded_hosts_list)
+        main_layout.addWidget(self.excluded_hosts_list)
 
         # Switch pour indiquer si la liste de hosts est à inclure ou à exclure
         self.host_mode_switch = QComboBox(self)
         self.host_mode_switch.addItems(["Include Hosts", "Exclude Hosts"])
         self.host_mode_switch.setCurrentIndex(0 if self.include_mode else 1)
         self.host_mode_switch.currentIndexChanged.connect(self.on_host_mode_changed)
-        layout.addWidget(self.host_mode_switch)
+        main_layout.addWidget(self.host_mode_switch)
+
+        # Bouton pour choisir le chemin de fichier
+        self.file_path_button = QPushButton("Select File to Save Contacts", self)
+        self.file_path_button.clicked.connect(self.open_file_dialog)
+        main_layout.addWidget(self.file_path_button)
+
+        # Label for max emails input
+        self.max_emails_label = QLabel("Max emails to process (leave empty for all):")
+        main_layout.addWidget(self.max_emails_label)
+
+        # Input for max amount of emails to process
+        self.max_emails_input = QLineEdit(self)
+        self.max_emails_input.setPlaceholderText(
+            "Enter max emails to process (leave empty for no max)"
+        )
+        main_layout.addWidget(self.max_emails_input)
+
+        # Layout for save and delete preset buttons
+        preset_buttons_layout = QHBoxLayout()
 
         # Bouton pour sauvegarder un preset (initialement caché)
         self.save_preset_button = QPushButton("Save Preset", self)
         self.save_preset_button.clicked.connect(self.save_preset)
-        self.save_preset_button.hide()  # Caché par défaut
-        layout.addWidget(self.save_preset_button)
+        self.save_preset_button.hide()
+        self.save_preset_button.setStyleSheet(
+            """
+            QPushButton {
+                background-color: #28a745;
+                color: white;
+                padding: 3px;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #218838;
+            }
+        """
+        )
 
         # Bouton pour supprimer un preset
         self.delete_preset_button = QPushButton("Delete Preset", self)
         self.delete_preset_button.clicked.connect(self.delete_preset)
-        layout.addWidget(self.delete_preset_button)
+        self.delete_preset_button.setStyleSheet(
+            """
+            QPushButton {
+                background-color: white;
+                padding: 3px;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #d3d3d3;
+            }
+        """
+        )
+        preset_buttons_layout.addWidget(self.delete_preset_button)
+        preset_buttons_layout.addWidget(self.save_preset_button)
+
+        main_layout.addLayout(preset_buttons_layout)
+
+        # Spacer between preset buttons and launch button
+        spacer = QFrame(self)
+        spacer.setFrameShape(QFrame.HLine)
+        spacer.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(spacer)
 
         # Bouton d'extraction
-        self.extract_button = QPushButton("Extract Emails", self)
-        self.extract_button.clicked.connect(self.extract_emails)
-        layout.addWidget(self.extract_button)
+        self.launch_button = QPushButton("Launch Extraction", self)
+        self.launch_button.setFont(QFont("Arial", 12, QFont.Bold))
+        self.launch_button.setStyleSheet(
+            """
+            QPushButton {
+                background-color: #007BFF;
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+            QPushButton:disabled {
+                background-color: #d3d3d3;
+                color: #a0a0a0;
+            }
+            QPushButton:hover:!disabled {
+                background-color: #0056b3;
+            }
+        """
+        )
+        self.launch_button.clicked.connect(self.launch_service)
+        main_layout.addWidget(self.launch_button)
 
         self.setLayout(layout)
-        self.setWindowTitle("Email Extraction")
+        self.setWindowTitle("SigMiner Launcher")
 
         # Initial state of delete button
         self.update_delete_button_visibility()
+        # Initial state of launch button
+        self.update_launch_button_visibility()
 
-    def add_field_form(self, field_name="", guideline="", field_type="TEXT"):
+    def launch_service(self):
+        try:
+            # Collect all the configured settings
+            fields = [field_form.get_field_data() for field_form in self.field_forms]
+            include_mode = self.host_mode_switch.currentIndex() == 0
+            config_data = {
+                "fields": fields,
+                "excluded_hosts": self.excluded_hosts,
+                "include_mode": include_mode,
+                "file_path": self.file_path_button.text(),
+                "max_emails": (
+                    int(self.max_emails_input.text())
+                    if self.max_emails_input.text()
+                    else None
+                ),
+            }
+
+            # Créer la modal et lancer le processus en arrière-plan
+            modal = ExtractionView(self, self.access_token, config_data)
+            modal.exec_()
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to launch service: {e}")
+
+    def show_launch_modal(self, data):
+        modal = ExtractionView(self, data)
+        modal.exec_()
+
+    def open_file_dialog(self):
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Select File", "", "CSV Files (*.csv);;All Files (*)"
+        )
+        if file_path:
+            if not file_path.endswith(".csv"):
+                file_path += ".csv"  # Forcer l'extension CSV si elle n'est pas présente
+            self.file_path_button.setText(file_path)  # Use the file path as button text
+            self.on_field_modified()  # Mettre à jour l'état de modification
+
+    def add_field_form(self, field_name="", guideline=""):
         field_form = FieldFormView(
-            self.remove_field_form, str(field_name), str(guideline), str(field_type)
+            self.remove_field_form, str(field_name), str(guideline)
         )
         self.fields_layout.addWidget(field_form)
         self.field_forms.append(field_form)
@@ -114,15 +245,16 @@ class EmailView(QWidget):
         # Connect signals for field modification
         field_form.field_name_input.textChanged.connect(self.on_field_modified)
         field_form.guideline_input.textChanged.connect(self.on_field_modified)
-        field_form.type_selector.currentIndexChanged.connect(self.on_field_modified)
 
         self.update_save_preset_button_visibility()
+        self.update_launch_button_visibility()
 
     def remove_field_form(self, field_form):
         self.fields_layout.removeWidget(field_form)
         field_form.setParent(None)
         self.field_forms.remove(field_form)
         self.update_save_preset_button_visibility()
+        self.update_launch_button_visibility()
 
     def add_excluded_host(self):
         host = self.excluded_hosts_input.text().strip()
@@ -148,6 +280,8 @@ class EmailView(QWidget):
             "fields": fields,
             "excluded_hosts": self.excluded_hosts,
             "include_mode": include_mode,
+            "file_path": self.file_path_button.text(),  # Use button text for file path
+            "max_emails": self.max_emails_input.text(),
         }
 
         current_preset_name = self.preset_selector.currentText()
@@ -202,9 +336,7 @@ class EmailView(QWidget):
 
             # Charger les champs d'extraction
             for field in preset_data.get("fields", []):
-                self.add_field_form(
-                    field["field_name"], field["guideline"], field["type"]
-                )
+                self.add_field_form(field["field_name"], field["guideline"])
 
             # Charger les domaines d'emails
             self.excluded_hosts = preset_data.get("excluded_hosts", [])
@@ -216,26 +348,27 @@ class EmailView(QWidget):
             self.host_mode_switch.setCurrentIndex(
                 0 if preset_data.get("include_mode", True) else 1
             )
+
+            # Charger le chemin du fichier
+            file_path = preset_data.get("file_path", "No file selected")
+            self.file_path_button.setText(file_path)  # Use button text for file path
+
+            # Charger le nombre maximum d'emails
+            max_emails = preset_data.get("max_emails", "")
+            self.max_emails_input.setText(max_emails)
+
             self.update_hosts_label()
 
             self.original_preset_hash = self.get_preset_hash(preset_data)
 
         self.update_save_preset_button_visibility()
+        self.update_delete_button_visibility()  # Ensure delete button visibility is updated
+        self.update_launch_button_visibility()
 
     def clear_field_forms(self):
         for field_form in self.field_forms:
             field_form.setParent(None)
         self.field_forms = []
-
-    def extract_emails(self):
-        try:
-            email_manager = EmailManager(self.access_token)
-            emails = email_manager.get_emails(
-                excluded_hosts=self.excluded_hosts
-            )  # Exclure les emails
-            self.result_label.setText(f"{len(emails)} emails extracted.")
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to extract emails: {e}")
 
     def update_save_preset_button_visibility(self):
         fields = [field_form.get_field_data() for field_form in self.field_forms]
@@ -254,6 +387,7 @@ class EmailView(QWidget):
 
     def on_field_modified(self):
         self.update_save_preset_button_visibility()
+        self.update_launch_button_visibility()
 
     def get_preset_hash(self, preset_data):
         preset_string = json.dumps(preset_data, sort_keys=True)
@@ -274,3 +408,12 @@ class EmailView(QWidget):
             self.hosts_label.setText("Included email hosts (double-click to delete):")
         else:
             self.hosts_label.setText("Excluded email hosts (double-click to delete):")
+
+    def update_launch_button_visibility(self):
+        if (
+            len(self.field_forms) > 0
+            and self.file_path_button.text() != "No file selected"
+        ):
+            self.launch_button.setEnabled(True)
+        else:
+            self.launch_button.setEnabled(False)

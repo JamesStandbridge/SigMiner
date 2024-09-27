@@ -36,6 +36,13 @@ class ConfigManager:
     def get_tenant_id(self):
         return self.config.get("TENANT_ID")
 
+    def set_api_key(self, api_key):
+        self.config["API_KEY"] = api_key
+        self.save_config()
+
+    def get_api_key(self):
+        return self.config.get("API_KEY")
+
     def save_preset(self, preset_name, preset_data):
         self.config[preset_name] = preset_data
         self.save_config()
@@ -45,7 +52,9 @@ class ConfigManager:
 
     def get_all_presets(self):
         return [
-            key for key in self.config.keys() if key not in ["CLIENT_ID", "TENANT_ID"]
+            key
+            for key in self.config.keys()
+            if key not in ["CLIENT_ID", "TENANT_ID", "API_KEY"]
         ]
 
     def delete_preset(self, preset_name):

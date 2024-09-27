@@ -1,0 +1,3 @@
+([('app',
+   '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/dist/app',
+   'EXECUTABLE')],)
