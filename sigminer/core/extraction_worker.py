@@ -33,6 +33,10 @@ class ExtractionWorker(QThread):
         self.meta_non_null_counts = {
             field["field_name"]: 0 for field in launcher_config["fields"]
         }
+        self.existing_contacts = {}  # To store contacts from CSV if already present
+        self.headers = set(
+            ["email_address"]
+        )  # Store headers of the existing CSV, always start with email_address
 
     def get_timestamp(self):
         """Return the current time formatted as a string."""
@@ -43,6 +47,62 @@ class ExtractionWorker(QThread):
         async with aiofiles.open("process_log.txt", "a") as log_file:
             await log_file.write(timestamped_message + "\n")
         self.log_signal.emit(timestamped_message)
+
+    async def load_existing_contacts(self):
+        """Load existing contacts from the CSV file if it exists and collect headers."""
+        if os.path.exists(self.csv_file_path):
+            await self.log_message(
+                f"Loading existing contacts from {self.csv_file_path}"
+            )
+            async with aiofiles.open(self.csv_file_path, mode="r") as csvfile:
+                content = await csvfile.readlines()
+                if not content:
+                    # File is empty
+                    await self.log_message(
+                        f"The CSV file is empty. No contacts loaded."
+                    )
+                    return
+                reader = csv.DictReader(content)
+                if reader.fieldnames is None:
+                    # No headers in the file
+                    await self.log_message(
+                        f"No headers found in the CSV file. The file might be corrupted or empty."
+                    )
+                    return
+                self.headers = set(reader.fieldnames)  # Save existing headers
+                self.existing_contacts = {row["email_address"]: row for row in reader}
+
+    async def write_to_csv(self, results: Dict[str, str]):
+        """Write new or updated results to the CSV file."""
+        file_exists = os.path.isfile(self.csv_file_path)
+
+        # Load existing contacts if the file exists and not already loaded
+        if file_exists and not self.existing_contacts:
+            await self.load_existing_contacts()
+
+        # Check if the email already exists and update the row if needed
+        email_address = results["email_address"]
+        if email_address in self.existing_contacts:
+            row = self.existing_contacts[email_address]
+            for key, value in results.items():
+                if key not in row or row[key] in ["", "0", "null"]:
+                    row[key] = value  # Update missing or null fields
+            results = row  # Use updated row
+
+        # Add missing headers (fields) to the results and update the header set
+        all_fields = set(results.keys()).union(self.meta_non_null_counts.keys())
+        self.headers = self.headers.union(
+            all_fields
+        )  # Ensure all meta fields are included
+
+        # Ensure the headers include all necessary fields, including any new metas
+        async with aiofiles.open(self.csv_file_path, mode="w", newline="") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=self.headers)
+            await self.log_message("Writing headers to the CSV file.")
+            await writer.writeheader()  # Always write header
+            for contact in self.existing_contacts.values():
+                await writer.writerow(contact)
+            await writer.writerow(results)
 
     async def process_email_meta(self, email: dict, field: FieldConfig):
         field_name = field["field_name"]
@@ -105,14 +165,6 @@ class ExtractionWorker(QThread):
         await self.write_to_csv(results)
         self.total_contacts_processed += 1
 
-    async def write_to_csv(self, results: Dict[str, str]):
-        file_exists = os.path.isfile(self.csv_file_path)
-        async with aiofiles.open(self.csv_file_path, mode="a", newline="") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=results.keys())
-            if not file_exists:
-                await writer.writeheader()
-            await writer.writerow(results)
-
     async def launch_extraction(self):
         await self.log_message(f"Launcher Config: {self.launcher_config}")
 
@@ -120,6 +172,9 @@ class ExtractionWorker(QThread):
         await self.log_message(
             f"Starting email extraction. Max emails: {max_emails or 'None'}"
         )
+
+        # Load existing contacts from the CSV
+        await self.load_existing_contacts()
 
         email_manager = EmailManager(self.access_token)
         emails = email_manager.get_emails(max_emails)

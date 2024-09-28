@@ -1,3 +1,4 @@
-email_address,Firstname,Lastname,Company,Phone number
-jamesbidons2@gmail.com,Hanna,COHEN,Malt,07 55 50 28 07
-jamesbidons4@gmail.com,Lucas,null,null,null
+email_address,Lastname,Object of the email,Phone number,Firstname,Company
+jamesbidons4@gmail.com,null,Updates and assistance on website project tasks,null,Lucas,null
+jamesbidons2@gmail.com,COHEN,Job opportunity for a fullstack developer (Javascript and .Net) at L'Oréal,07 55 50 28 07,Hanna,Malt
+jamesbidons2@gmail.com,COHEN,Job opportunity for a fullstack developer (Javascript and .Net) at L'Oréal,07 55 50 28 07,Hanna,Malt
