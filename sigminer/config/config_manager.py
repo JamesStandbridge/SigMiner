@@ -39,6 +39,9 @@ class ConfigManager:
     def set_api_key(self, api_key):
         self.config["API_KEY"] = api_key
         self.save_config()
+        os.environ["OPENAI_API_KEY"] = (
+            api_key  # Set environment variable when API key changes
+        )
 
     def get_api_key(self):
         return self.config.get("API_KEY")

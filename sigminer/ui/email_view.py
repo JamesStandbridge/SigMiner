@@ -14,6 +14,8 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QFileDialog,
     QFrame,
+    QDialog,
+    QTextEdit,
 )
 from PyQt5.QtGui import QFont
 
@@ -47,6 +49,9 @@ class EmailView(QWidget):
 
         # Set maximum height for the main scroll area
         main_scroll_area.setFixedHeight(600)
+
+        # Set fixed width for the window
+        self.setFixedWidth(800)
 
         # Sélection des presets
         self.preset_selector = QComboBox(self)
@@ -116,6 +121,28 @@ class EmailView(QWidget):
             "Enter max emails to process (leave empty for no max)"
         )
         main_layout.addWidget(self.max_emails_input)
+        # Champ select pour le modèle OpenAI
+        self.model_selector_label = QLabel("Select OpenAI Model:")
+        main_layout.addWidget(self.model_selector_label)
+
+        self.model_selector = QComboBox(self)
+        self.model_selector.addItems(
+            [
+                "gpt-4o",
+                "gpt-4o-2024-08-06",
+                "gpt-4o-mini",
+                "o1-mini",
+                "gpt-4-turbo",
+                "gpt-3.5-turbo-0125",
+            ]
+        )
+        self.model_selector.setCurrentIndex(0)  # Set default selected value
+        main_layout.addWidget(self.model_selector)
+
+        # Button to show model pricing
+        self.model_pricing_button = QPushButton("Show Model Pricing", self)
+        self.model_pricing_button.clicked.connect(self.show_model_pricing)
+        main_layout.addWidget(self.model_pricing_button)
 
         # Layout for save and delete preset buttons
         preset_buttons_layout = QHBoxLayout()
@@ -212,6 +239,7 @@ class EmailView(QWidget):
                     if self.max_emails_input.text()
                     else None
                 ),
+                "model": self.model_selector.currentText(),  # Add selected model to config
             }
 
             # Créer la modal et lancer le processus en arrière-plan
@@ -282,6 +310,7 @@ class EmailView(QWidget):
             "include_mode": include_mode,
             "file_path": self.file_path_button.text(),  # Use button text for file path
             "max_emails": self.max_emails_input.text(),
+            "model": self.model_selector.currentText(),  # Add selected model to preset
         }
 
         current_preset_name = self.preset_selector.currentText()
@@ -357,6 +386,12 @@ class EmailView(QWidget):
             max_emails = preset_data.get("max_emails", "")
             self.max_emails_input.setText(max_emails)
 
+            # Charger le modèle OpenAI
+            model = preset_data.get("model", "")
+            index = self.model_selector.findText(model)
+            if index >= 0:
+                self.model_selector.setCurrentIndex(index)
+
             self.update_hosts_label()
 
             self.original_preset_hash = self.get_preset_hash(preset_data)
@@ -378,6 +413,7 @@ class EmailView(QWidget):
             "fields": fields,
             "excluded_hosts": self.excluded_hosts,
             "include_mode": include_mode,
+            "model": self.model_selector.currentText(),  # Add selected model to hash calculation
         }
         current_hash = self.get_preset_hash(preset_data)
         if len(self.field_forms) > 0 and current_hash != self.original_preset_hash:
@@ -417,3 +453,56 @@ class EmailView(QWidget):
             self.launch_button.setEnabled(True)
         else:
             self.launch_button.setEnabled(False)
+
+    def show_model_pricing(self):
+        pricing_info = [
+            ("gpt-4o", "$5.00 / 1M input tokens", "$15.00 / 1M output tokens"),
+            (
+                "gpt-4o-2024-08-06",
+                "$2.50 / 1M input tokens",
+                "$10.00 / 1M output tokens",
+            ),
+            ("gpt-4o-mini", "$0.150 / 1M input tokens", "$0.600 / 1M output tokens"),
+            ("o1-mini", "$3.00 / 1M input tokens", "$12.00 / 1M output tokens"),
+            ("gpt-4-turbo", "$10.00 / 1M tokens", "$30.00 / 1M tokens"),
+            ("gpt-3.5-turbo-0125", "$0.50 / 1M tokens", "$1.50 / 1M tokens"),
+        ]
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Model Pricing")
+        dialog.resize(600, 300)  # Make the modal wider and taller
+        layout = QVBoxLayout(dialog)
+
+        explanation = QTextEdit(dialog)
+        explanation.setReadOnly(True)
+        explanation.setHtml(
+            """
+            <p><b>What is a token?</b></p>
+            <p>A token is a unit of text that the model processes. Tokens can be as short as one character or as long as one word (e.g., "a", "apple"). For example, the word "email" is one token, while the sentence "I received an email" is four tokens.</p>
+            <p>When processing emails, the number of tokens will depend on the length and complexity of the email content. For instance, a short email might be 50 tokens, while a longer email could be 200 tokens or more.</p>
+            """
+        )
+        layout.addWidget(explanation)
+
+        table = QTextEdit(dialog)
+        table.setReadOnly(True)
+
+        table_html = "<table border='1' style='width:100%; border-collapse: collapse;'>"
+        table_html += (
+            "<tr><th>Model</th><th>Input Tokens</th><th>Output Tokens</th></tr>"
+        )
+
+        for model, input_price, output_price in pricing_info:
+            table_html += f"<tr><td>{model}</td><td>{input_price}</td><td>{output_price}</td></tr>"
+
+        table_html += "</table>"
+
+        table.setHtml(table_html)
+        layout.addWidget(table)
+
+        close_button = QPushButton("Close", dialog)
+        close_button.clicked.connect(dialog.accept)
+        layout.addWidget(close_button)
+
+        dialog.setLayout(layout)
+        dialog.exec_()

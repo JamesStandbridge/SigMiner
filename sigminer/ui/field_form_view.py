@@ -33,6 +33,7 @@ class FieldFormView(QWidget):
         frame.setStyleSheet("#fieldFrame { border: 1px solid #d4d4d4; }")
         frame_layout = QVBoxLayout(frame)
         frame_layout.setSpacing(10)
+        frame.setFixedHeight(150)  # Set a fixed height for the frame
 
         # Bouton de suppression avec une petite croix en haut à droite du cadre
         remove_button = QPushButton("x", self)
