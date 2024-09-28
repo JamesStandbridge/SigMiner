@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QHBoxLayout,
     QFrame,
+    QCheckBox,
 )
 from PyQt5.QtGui import QFont
 
@@ -16,12 +17,13 @@ class FieldFormView(QWidget):
         remove_callback,
         field_name="",
         guideline="",
+        can_be_overwritten=False,
     ):
         super().__init__()
         self.remove_callback = remove_callback
-        self.init_ui(field_name, guideline)
+        self.init_ui(field_name, guideline, can_be_overwritten)
 
-    def init_ui(self, field_name, guideline):
+    def init_ui(self, field_name, guideline, can_be_overwritten):
         layout = QVBoxLayout()
         layout.setSpacing(10)
 
@@ -33,7 +35,7 @@ class FieldFormView(QWidget):
         frame.setStyleSheet("#fieldFrame { border: 1px solid #d4d4d4; }")
         frame_layout = QVBoxLayout(frame)
         frame_layout.setSpacing(10)
-        frame.setFixedHeight(150)  # Set a fixed height for the frame
+        frame.setFixedHeight(180)  # Adjusted height to accommodate the new checkbox
 
         # Bouton de suppression avec une petite croix en haut à droite du cadre
         remove_button = QPushButton("x", self)
@@ -78,6 +80,11 @@ class FieldFormView(QWidget):
         guideline_layout.addWidget(self.guideline_input)
         frame_layout.addLayout(guideline_layout)
 
+        # Checkbox for can be overwritten
+        self.can_be_overwritten_checkbox = QCheckBox("Can be overwritten", self)
+        self.can_be_overwritten_checkbox.setChecked(can_be_overwritten)
+        frame_layout.addWidget(self.can_be_overwritten_checkbox)
+
         layout.addWidget(frame)
         self.setLayout(layout)
 
@@ -88,4 +95,5 @@ class FieldFormView(QWidget):
         return {
             "field_name": self.field_name_input.text(),
             "guideline": self.guideline_input.text(),
+            "can_be_overwritten": self.can_be_overwritten_checkbox.isChecked(),
         }

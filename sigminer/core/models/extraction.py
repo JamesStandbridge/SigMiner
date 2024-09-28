@@ -11,6 +11,7 @@ class MetaResponse(BaseModel):
 class FieldConfig(TypedDict):
     field_name: str
     guideline: str
+    can_be_overwritten: bool
 
 
 class LauncherConfig(TypedDict):

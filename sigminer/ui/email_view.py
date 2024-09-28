@@ -263,9 +263,9 @@ class EmailView(QWidget):
             self.file_path_button.setText(file_path)  # Use the file path as button text
             self.on_field_modified()  # Mettre à jour l'état de modification
 
-    def add_field_form(self, field_name="", guideline=""):
+    def add_field_form(self, field_name="", guideline="", can_be_overwritten=False):
         field_form = FieldFormView(
-            self.remove_field_form, str(field_name), str(guideline)
+            self.remove_field_form, str(field_name), str(guideline), can_be_overwritten
         )
         self.fields_layout.addWidget(field_form)
         self.field_forms.append(field_form)
@@ -365,7 +365,11 @@ class EmailView(QWidget):
 
             # Charger les champs d'extraction
             for field in preset_data.get("fields", []):
-                self.add_field_form(field["field_name"], field["guideline"])
+                self.add_field_form(
+                    field["field_name"],
+                    field["guideline"],
+                    field.get("can_be_overwritten", False),
+                )
 
             # Charger les domaines d'emails
             self.excluded_hosts = preset_data.get("excluded_hosts", [])
