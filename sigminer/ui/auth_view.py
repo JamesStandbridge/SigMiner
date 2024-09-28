@@ -1,27 +1,20 @@
-from PyQt5.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QPushButton,
-    QLineEdit,
-    QMessageBox,
-    QLabel,
-    QFrame,
-)
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
-from sigminer.auth.auth_manager import AuthManager
-from sigminer.config.config_manager import ConfigManager
+from PyQt5.QtWidgets import QWidget
 
 
 class AuthView(QWidget):
     def __init__(self, on_authenticated_callback):
         super().__init__()
+        from sigminer.config.config_manager import ConfigManager
+
         self.config_manager = ConfigManager()
         self.on_authenticated_callback = on_authenticated_callback
         self.init_ui()
 
     def init_ui(self):
+        from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QFrame, QPushButton
+        from PyQt5.QtCore import Qt
+        from PyQt5.QtGui import QFont
+
         layout = QVBoxLayout()
 
         # Set margins and spacing for the entire form
@@ -101,6 +94,9 @@ class AuthView(QWidget):
         self.setFixedSize(400, 300)
 
     def authenticate(self):
+        from sigminer.auth.auth_manager import AuthManager
+        from PyQt5.QtWidgets import QMessageBox
+
         client_id = self.client_id_input.text()
         tenant_id = self.tenant_id_input.text()
 
