@@ -43,6 +43,35 @@ SigMiner is a desktop application designed to extract metadata from emails using
 4.  Ensure you have an API key from OpenAI for metadata extraction.
     
 
+## Building the Application
+
+To build the application into a standalone executable, you can use PyInstaller with Poetry. Follow these steps:
+
+1. Ensure you have all dependencies installed and the virtual environment activated:
+    ```
+    poetry install
+    poetry shell
+    ```
+
+2. Run the following command to build the application:
+    ```
+    poetry run pyinstaller --onedir --windowed --hidden-import=tiktoken_ext.openai_public --hidden-import=tiktoken_ext --collect-all litellm --copy-metadata litellm sigminer/app.py
+    ```
+
+### Explanation of Arguments
+
+- `poetry run pyinstaller`: This runs PyInstaller within the Poetry-managed virtual environment.
+- `--onedir`: Creates a one-folder bundle containing the executable and all dependencies.
+- `--windowed`: Builds a windowed application (no console window).
+- `--hidden-import=tiktoken_ext.openai_public`: Ensures that the `tiktoken_ext.openai_public` module is included in the build, even if it is not explicitly imported in the code.
+- `--hidden-import=tiktoken_ext`: Ensures that the `tiktoken_ext` module is included in the build.
+- `--collect-all litellm`: Collects all files related to the `litellm` package, including data files and dependencies.
+- `--copy-metadata litellm`: Copies the metadata for the `litellm` package, which may be required for the package to function correctly.
+- `sigminer/app.py`: The entry point of the application to be bundled.
+
+After running the command, the built application will be located in the `dist` directory within a subdirectory named after your project.
+
+
 ## Usage
 
 ### Running the Application
