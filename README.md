@@ -1,6 +1,6 @@
 # SigMiner - Email Extraction and Metadata Analysis Tool
 
-SigMiner is a desktop application designed to extract metadata from emails using OpenAI models. The application allows users to configure fields for extraction, specify email hosts to include or exclude, and save the extracted data in CSV format. It also features an easy-to-use UI for authentication, settings management, and launching extraction tasks.
+SigMiner is a desktop application designed to extract metadata from emails using LLM models. The application allows users to configure fields for extraction, specify email hosts to include or exclude, and save the extracted data in CSV format. It also features an easy-to-use UI for authentication, settings management, and launching extraction tasks.
 
 ## Features
 
