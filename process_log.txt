@@ -2304,3 +2304,207 @@ All messages sent.
 2024-09-28 12:23:09 - Total non-null values for Lastname: 4
 2024-09-28 12:23:09 - Total non-null values for Company: 5
 2024-09-28 12:23:09 - Total non-null values for Phone number: 2
+2024-09-28 15:46:37 - Configuration du Launcher: {'fields': [{'field_name': 'Firstname', 'guideline': ''}, {'field_name': 'Lastname', 'guideline': ''}, {'field_name': 'Company', 'guideline': "Extracts the company of the sender of the email, not a company just mentioned. Make sure you understand which company the person works for. For example, for headhunters, don't indicate the company for which the headhunter is looking for an employee, but which consultancy company they work for."}, {'field_name': 'Phone number', 'guideline': ''}], 'excluded_hosts': [], 'include_mode': False, 'file_path': '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv', 'max_emails': 2, 'model': 'gpt-4o'}
+2024-09-28 15:46:37 - Nombre max d'emails à traiter : 2
+2024-09-28 15:46:37 - Chargement des contacts existants depuis /Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv
+2024-09-28 15:46:39 - Extraction des emails terminée. Total : 2
+2024-09-28 15:46:39 - Traitement de la meta 'Lastname' pour l'email 'Résumé'
+2024-09-28 15:46:39 - Traitement de la meta 'Phone number' pour l'email 'Résumé'
+2024-09-28 15:46:39 - Traitement de la meta 'Company' pour l'email 'Résumé'
+2024-09-28 15:46:40 - Réponse pour Lastname: {'thoughtProcess': "The email content is signed by 'Lucas' at the end. There is no last name provided in the email content.", 'answer': 'null'}
+2024-09-28 15:46:40 - Réponse pour Company: {'thoughtProcess': 'The email content does not provide any explicit information about the company the sender, Lucas, works for. The email is focused on project details and communication with Kévin and James, but no company name is mentioned.', 'answer': 'null'}
+2024-09-28 15:46:40 - Coût pour Lastname: $0.0205
+2024-09-28 15:46:40 - Coût pour Company: $0.0211
+2024-09-28 15:46:40 - Réponse pour Phone number: {'thoughtProcess': 'I have carefully read through the provided email content. There is no mention of a phone number in the text. Therefore, it is impossible to extract a phone number from this context.', 'answer': 'null'}
+2024-09-28 15:46:40 - Coût pour Phone number: $0.0207
+2024-09-28 15:46:40 - Écriture des en-têtes dans le fichier CSV.
+2024-09-28 15:46:40 - Tous les emails ont été traités.
+2024-09-28 15:46:40 - Coût total des requêtes : $0.0622
+2024-09-28 15:46:40 - Temps total d'exécution : 0:00:01.766236
+2024-09-28 15:46:40 - Temps moyen par email : 883.12 ms
+2024-09-28 15:46:40 - Coût moyen par email : $0.0311
+2024-09-28 15:46:40 - Total des contacts traités : 2
+2024-09-28 15:46:40 - Total des metas traitées : 3
+2024-09-28 15:46:40 - Total des metas trouvées : 0
+2024-09-28 15:46:40 - Total des valeurs non nulles pour Firstname: 0
+2024-09-28 15:46:40 - Total des valeurs non nulles pour Lastname: 0
+2024-09-28 15:46:40 - Total des valeurs non nulles pour Company: 0
+2024-09-28 15:46:40 - Total des valeurs non nulles pour Phone number: 0
+2024-09-28 15:46:58 - Configuration du Launcher: {'fields': [{'field_name': 'Firstname', 'guideline': ''}, {'field_name': 'Lastname', 'guideline': ''}, {'field_name': 'Company', 'guideline': "Extracts the company of the sender of the email, not a company just mentioned. Make sure you understand which company the person works for. For example, for headhunters, don't indicate the company for which the headhunter is looking for an employee, but which consultancy company they work for."}, {'field_name': 'Phone number', 'guideline': ''}], 'excluded_hosts': [], 'include_mode': False, 'file_path': '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv', 'max_emails': 2, 'model': 'gpt-4o'}
+2024-09-28 15:46:58 - Nombre max d'emails à traiter : 2
+2024-09-28 15:46:58 - Chargement des contacts existants depuis /Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv
+2024-09-28 15:46:58 - Le fichier CSV est vide.
+2024-09-28 15:46:59 - Extraction des emails terminée. Total : 2
+2024-09-28 15:46:59 - Traitement de la meta 'Firstname' pour l'email 'Résumé'
+2024-09-28 15:46:59 - Traitement de la meta 'Company' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:46:59 - Traitement de la meta 'Lastname' pour l'email 'Résumé'
+2024-09-28 15:46:59 - Traitement de la meta 'Phone number' pour l'email 'Résumé'
+2024-09-28 15:46:59 - Traitement de la meta 'Lastname' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:46:59 - Traitement de la meta 'Firstname' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:46:59 - Traitement de la meta 'Company' pour l'email 'Résumé'
+2024-09-28 15:46:59 - Traitement de la meta 'Phone number' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:47:00 - Réponse pour Lastname: {'thoughtProcess': "Analyzing the email content to identify any last names mentioned. The email is signed by 'Hanna COHEN', which appears to be the last name of the sender.", 'answer': 'COHEN'}
+2024-09-28 15:47:00 - Coût pour Lastname: $0.0170
+2024-09-28 15:47:01 - Réponse pour Lastname: {'thoughtProcess': "The email content is signed by 'Lucas' at the end. There is no last name provided in the email content.", 'answer': 'null'}
+2024-09-28 15:47:01 - Coût pour Lastname: $0.0205
+2024-09-28 15:47:01 - Réponse pour Firstname: {'thoughtProcess': "The email content includes a greeting and a signature. The greeting starts with 'Bonjour,' and is followed by 'Je suis Hanna, Consultante en recrutement chez Malt.' This indicates that the first name of the sender is Hanna.", 'answer': 'Hanna'}
+2024-09-28 15:47:01 - Coût pour Firstname: $0.0171
+2024-09-28 15:47:01 - Réponse pour Company: {'thoughtProcess': "The email is from Hanna Cohen, a recruitment consultant at Malt. The company she works for is Malt, not L'Oréal, which is mentioned as the client.", 'answer': 'Malt'}
+2024-09-28 15:47:01 - Coût pour Company: $0.0172
+2024-09-28 15:47:01 - Réponse pour Phone number: {'thoughtProcess': 'I have carefully read the provided email content and analyzed it for any mention of a phone number. There is no phone number mentioned in the email content.', 'answer': 'null'}
+2024-09-28 15:47:01 - Coût pour Phone number: $0.0206
+2024-09-28 15:47:01 - Réponse pour Company: {'thoughtProcess': 'The email content does not provide any explicit information about the company the sender, Lucas, works for. The email is focused on project updates and technical details without mentioning any company name.', 'answer': 'null'}
+2024-09-28 15:47:01 - Coût pour Company: $0.0209
+2024-09-28 15:47:01 - Réponse pour Phone number: {'thoughtProcess': 'I will carefully read the provided email content to identify any phone numbers mentioned. If a phone number is found, I will extract it; otherwise, I will return null.', 'answer': '07 55 50 28 07'}
+2024-09-28 15:47:01 - Coût pour Phone number: $0.0171
+2024-09-28 15:47:01 - Réponse pour Firstname: {'thoughtProcess': "The email content contains a sign-off with the name 'Lucas' at the end. This is the only first name mentioned in the email content.", 'answer': 'Lucas'}
+2024-09-28 15:47:01 - Coût pour Firstname: $0.0206
+2024-09-28 15:47:01 - Écriture des en-têtes dans le fichier CSV.
+2024-09-28 15:49:30 - Configuration du Launcher: {'fields': [{'field_name': 'Firstname', 'guideline': ''}, {'field_name': 'Lastname', 'guideline': ''}, {'field_name': 'Company', 'guideline': "Extracts the company of the sender of the email, not a company just mentioned. Make sure you understand which company the person works for. For example, for headhunters, don't indicate the company for which the headhunter is looking for an employee, but which consultancy company they work for."}, {'field_name': 'Phone number', 'guideline': ''}], 'excluded_hosts': [], 'include_mode': False, 'file_path': '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv', 'max_emails': 2, 'model': 'gpt-4o'}
+2024-09-28 15:49:30 - Nombre max d'emails à traiter : 2
+2024-09-28 15:49:30 - Chargement des contacts existants depuis /Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv
+2024-09-28 15:49:30 - Le fichier CSV est vide.
+2024-09-28 15:49:30 - Extraction des emails terminée. Total : 2
+2024-09-28 15:49:30 - Traitement de la meta 'Company' pour l'email 'Résumé'
+2024-09-28 15:49:30 - Traitement de la meta 'Phone number' pour l'email 'Résumé'
+2024-09-28 15:49:30 - Traitement de la meta 'Firstname' pour l'email 'Résumé'
+2024-09-28 15:49:30 - Traitement de la meta 'Lastname' pour l'email 'Résumé'
+2024-09-28 15:49:30 - Traitement de la meta 'Lastname' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:49:30 - Traitement de la meta 'Company' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:49:30 - Traitement de la meta 'Phone number' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:49:30 - Traitement de la meta 'Firstname' pour l'email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 15:49:31 - Réponse pour Lastname: {'thoughtProcess': "The email content is signed by 'Lucas' at the end. There is no last name provided in the email content.", 'answer': 'null'}
+2024-09-28 15:49:31 - Réponse pour Lastname: {'thoughtProcess': "Analyzing the email content to identify any last names mentioned. The email is signed by 'Hanna COHEN', which appears to be the last name of the sender.", 'answer': 'COHEN'}
+2024-09-28 15:49:31 - Réponse pour Company: {'thoughtProcess': "L'email est envoyé par Hanna Cohen, une consultante en recrutement chez Malt. Bien que la mission soit pour L'Oréal, l'expéditeur travaille pour Malt.", 'answer': 'Malt'}
+2024-09-28 15:49:31 - Coût pour Lastname: $0.0205
+2024-09-28 15:49:31 - Coût pour Lastname: $0.0170
+2024-09-28 15:49:31 - Coût pour Company: $0.0172
+2024-09-28 15:49:31 - Réponse pour Firstname: {'thoughtProcess': "The email content includes a sign-off with the name 'Lucas'. This is the first name of the sender.", 'answer': 'Lucas'}
+2024-09-28 15:49:31 - Coût pour Firstname: $0.0205
+2024-09-28 15:49:31 - Réponse pour Company: {'thoughtProcess': 'The email content does not provide any explicit information about the company the sender, Lucas, works for. It mainly discusses project details and coordination with Kévin and James without mentioning any company name.', 'answer': 'null'}
+2024-09-28 15:49:31 - Coût pour Company: $0.0210
+2024-09-28 15:49:31 - Réponse pour Phone number: {'thoughtProcess': 'I have carefully read the provided email content and analyzed it for any mention of a phone number. There is no phone number mentioned in the email content.', 'answer': 'null'}
+2024-09-28 15:49:31 - Coût pour Phone number: $0.0206
+2024-09-28 15:49:32 - Réponse pour Phone number: {'thoughtProcess': 'I will carefully read the provided email content to identify any phone numbers mentioned. If a phone number is found, I will extract it; otherwise, I will return null.', 'answer': '07 55 50 28 07'}
+2024-09-28 15:49:32 - Coût pour Phone number: $0.0171
+2024-09-28 15:49:32 - Réponse pour Firstname: {'thoughtProcess': "The email content includes a signature from 'Hanna COHEN,' who identifies herself as a Recruitment Consultant. The first name 'Hanna' is clearly mentioned in the greeting as well as in the signature.", 'answer': 'Hanna'}
+2024-09-28 15:49:32 - Coût pour Firstname: $0.0171
+2024-09-28 15:49:32 - Écriture des en-têtes dans le fichier CSV.
+2024-09-28 15:49:32 - Tous les emails ont été traités.
+2024-09-28 15:49:32 - Coût total des requêtes : $0.1509
+2024-09-28 15:49:32 - Temps total d'exécution : 0:00:01.990805
+2024-09-28 15:49:32 - Temps moyen par email : 995.40 ms
+2024-09-28 15:49:32 - Coût moyen par email : $0.0754
+2024-09-28 15:49:32 - Total des contacts traités : 2
+2024-09-28 15:49:32 - Total des metas traitées : 8
+2024-09-28 15:49:32 - Total des metas trouvées : 5
+2024-09-28 15:49:32 - Total des valeurs non nulles pour Firstname: 2
+2024-09-28 15:49:32 - Total des valeurs non nulles pour Lastname: 1
+2024-09-28 15:49:32 - Total des valeurs non nulles pour Company: 1
+2024-09-28 15:49:32 - Total des valeurs non nulles pour Phone number: 1
+2024-09-28 15:49:54 - Configuration du Launcher: {'fields': [{'field_name': 'Firstname', 'guideline': ''}, {'field_name': 'Lastname', 'guideline': ''}, {'field_name': 'Company', 'guideline': "Extracts the company of the sender of the email, not a company just mentioned. Make sure you understand which company the person works for. For example, for headhunters, don't indicate the company for which the headhunter is looking for an employee, but which consultancy company they work for."}, {'field_name': 'Phone number', 'guideline': ''}], 'excluded_hosts': [], 'include_mode': False, 'file_path': '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv', 'max_emails': None, 'model': 'gpt-4o'}
+2024-09-28 15:49:54 - Nombre max d'emails à traiter : None
+2024-09-28 15:49:54 - Chargement des contacts existants depuis /Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv
+2024-09-28 15:49:55 - Extraction des emails terminée. Total : 8
+2024-09-28 15:49:55 - Traitement de la meta 'Lastname' pour l'email 'Résumé'
+2024-09-28 15:49:55 - Traitement de la meta 'Company' pour l'email 'Résumé'
+2024-09-28 15:49:55 - Traitement de la meta 'Firstname' pour l'email 'First contact'
+2024-09-28 15:49:55 - Traitement de la meta 'Company' pour l'email 'First contact'
+2024-09-28 15:49:55 - Traitement de la meta 'Lastname' pour l'email 'First contact'
+2024-09-28 15:49:55 - Traitement de la meta 'Phone number' pour l'email 'Résumé'
+2024-09-28 15:49:55 - Traitement de la meta 'Phone number' pour l'email 'First contact'
+2024-09-28 15:49:55 - Traitement de la meta 'Lastname' pour l'email 'TEST'
+2024-09-28 15:49:55 - Traitement de la meta 'Lastname' pour l'email ''
+2024-09-28 15:49:55 - Traitement de la meta 'Company' pour l'email 'TEST'
+2024-09-28 15:49:55 - Traitement de la meta 'Phone number' pour l'email 'TEST'
+2024-09-28 15:49:55 - Traitement de la meta 'Company' pour l'email ''
+2024-09-28 15:49:55 - Traitement de la meta 'Phone number' pour l'email ''
+2024-09-28 15:49:55 - Traitement de la meta 'Firstname' pour l'email ''
+2024-09-28 15:49:56 - Réponse pour Company: {'thoughtProcess': 'The email content provided is empty and does not contain any information about the sender or their company. Therefore, it is impossible to extract the company information.', 'answer': 'null'}
+2024-09-28 15:49:56 - Coût pour Company: $0.0037
+2024-09-28 15:49:56 - Réponse pour Lastname: {'thoughtProcess': 'The email content provided is empty and does not contain any information that can be used to extract a last name.', 'answer': 'null'}
+2024-09-28 15:49:56 - Coût pour Lastname: $0.0033
+2024-09-28 15:49:56 - Réponse pour Lastname: {'thoughtProcess': "Analyzing the email content to identify the last name of the sender. The signature at the end of the email contains the name 'James Standbridge'. The last name is 'Standbridge'.", 'answer': 'Standbridge'}
+2024-09-28 15:49:56 - Réponse pour Lastname: {'thoughtProcess': "The email content is signed by 'Lucas' at the end. There is no last name provided in the email content.", 'answer': 'null'}
+2024-09-28 15:49:56 - Réponse pour Company: {'thoughtProcess': "Analyzing the email content, the sender's company can be identified from the email signature. The sender, James Standbridge, is a Lead Software Engineer at Biolevate. This information is found in the signature block of the email.", 'answer': 'Biolevate'}
+2024-09-28 15:49:56 - Réponse pour Company: {'thoughtProcess': 'The email content does not provide any explicit information about the company the sender, Lucas, works for. The email is focused on project updates and technical details but lacks any company-specific identifiers.', 'answer': 'null'}
+2024-09-28 15:49:56 - Coût pour Lastname: $0.0205
+2024-09-28 15:49:56 - Coût pour Company: $0.0147
+2024-09-28 15:49:56 - Coût pour Company: $0.0210
+2024-09-28 15:49:56 - Coût pour Lastname: $0.0143
+2024-09-28 15:49:56 - Réponse pour Phone number: {'thoughtProcess': 'I have carefully read the provided email content and analyzed it for any mention of a phone number. There is no phone number mentioned in the email content.', 'answer': 'null'}
+2024-09-28 15:49:56 - Réponse pour Phone number: {'thoughtProcess': 'The email content provided is empty and does not contain any phone number or any other information. Therefore, it is impossible to extract a phone number from this context.', 'answer': 'null'}
+2024-09-28 15:49:56 - Coût pour Phone number: $0.0206
+2024-09-28 15:49:56 - Coût pour Phone number: $0.0034
+2024-09-28 15:49:56 - Réponse pour Company: {'thoughtProcess': 'The email content provided does not contain any information about a company. It is a test email with no relevant details.', 'answer': 'null'}
+2024-09-28 15:49:56 - Coût pour Company: $0.0030
+2024-09-28 15:49:57 - Réponse pour Phone number: {'thoughtProcess': "Analyzing the email content to identify any phone numbers present. The phone number is typically formatted in a recognizable pattern, such as '+33 6 45 34 28 98'.", 'answer': '+33 6 45 34 28 98'}
+2024-09-28 15:49:57 - Coût pour Phone number: $0.0145
+2024-09-28 15:49:57 - Réponse pour Firstname: {'thoughtProcess': 'The email content provided is empty and does not contain any information that can be used to extract a first name.', 'answer': 'null'}
+2024-09-28 15:49:57 - Coût pour Firstname: $0.0033
+2024-09-28 15:49:57 - Réponse pour Firstname: {'thoughtProcess': "The email signature contains the name 'James Standbridge'. The first name is 'James'.", 'answer': 'James'}
+2024-09-28 15:49:57 - Coût pour Firstname: $0.0140
+2024-09-28 15:49:57 - Réponse pour Phone number: {'thoughtProcess': 'The provided context includes the subject and content of an email. The content does not contain any phone number or any information that could be interpreted as a phone number.', 'answer': 'null'}
+2024-09-28 15:49:57 - Coût pour Phone number: $0.0028
+2024-09-28 15:49:58 - Réponse pour Lastname: {'thoughtProcess': "The context provided includes the subject and content of an email, but there is no mention of any person's name, let alone a last name.", 'answer': 'null'}
+2024-09-28 15:49:58 - Coût pour Lastname: $0.0028
+2024-09-28 15:49:58 - Écriture des en-têtes dans le fichier CSV.
+2024-09-28 15:49:58 - Tous les emails ont été traités.
+2024-09-28 15:49:58 - Coût total des requêtes : $0.1419
+2024-09-28 15:49:58 - Temps total d'exécution : 0:00:02.889956
+2024-09-28 15:49:58 - Temps moyen par email : 361.24 ms
+2024-09-28 15:49:58 - Coût moyen par email : $0.0177
+2024-09-28 15:49:58 - Total des contacts traités : 8
+2024-09-28 15:49:58 - Total des metas traitées : 14
+2024-09-28 15:49:58 - Total des metas trouvées : 4
+2024-09-28 15:49:58 - Total des valeurs non nulles pour Firstname: 1
+2024-09-28 15:49:58 - Total des valeurs non nulles pour Lastname: 1
+2024-09-28 15:49:58 - Total des valeurs non nulles pour Company: 1
+2024-09-28 15:49:58 - Total des valeurs non nulles pour Phone number: 1
+2024-09-28 15:50:26 - Configuration du Launcher: {'fields': [{'field_name': 'Firstname', 'guideline': ''}, {'field_name': 'Lastname', 'guideline': ''}, {'field_name': 'Company', 'guideline': "Extracts the company of the sender of the email, not a company just mentioned. Make sure you understand which company the person works for. For example, for headhunters, don't indicate the company for which the headhunter is looking for an employee, but which consultancy company they work for."}, {'field_name': 'Phone number', 'guideline': ''}], 'excluded_hosts': [], 'include_mode': False, 'file_path': '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv', 'max_emails': None, 'model': 'gpt-4o'}
+2024-09-28 15:50:26 - Nombre max d'emails à traiter : None
+2024-09-28 15:50:26 - Chargement des contacts existants depuis /Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv
+2024-09-28 15:50:26 - Extraction des emails terminée. Total : 8
+2024-09-28 15:50:26 - Traitement de la meta 'Company' pour l'email 'Résumé'
+2024-09-28 15:50:26 - Traitement de la meta 'Lastname' pour l'email 'Résumé'
+2024-09-28 15:50:26 - Traitement de la meta 'Phone number' pour l'email 'Résumé'
+2024-09-28 15:50:26 - Traitement de la meta 'Lastname' pour l'email 'TEST'
+2024-09-28 15:50:26 - Traitement de la meta 'Company' pour l'email 'TEST'
+2024-09-28 15:50:26 - Traitement de la meta 'Phone number' pour l'email 'TEST'
+2024-09-28 15:50:26 - Traitement de la meta 'Firstname' pour l'email ''
+2024-09-28 15:50:26 - Traitement de la meta 'Company' pour l'email ''
+2024-09-28 15:50:26 - Traitement de la meta 'Lastname' pour l'email ''
+2024-09-28 15:50:26 - Traitement de la meta 'Phone number' pour l'email ''
+2024-09-28 15:50:28 - Réponse pour Company: {'thoughtProcess': 'The email content provided does not contain any information about a company. It is a test email with no relevant details.', 'answer': 'null'}
+2024-09-28 15:50:28 - Réponse pour Lastname: {'thoughtProcess': 'The provided context includes the subject and content of an email, but it does not contain any information that can be used to extract a last name.', 'answer': 'null'}
+2024-09-28 15:50:28 - Réponse pour Lastname: {'thoughtProcess': 'The email content provided does not contain any information, including a last name. Therefore, it is impossible to extract a last name from the given context.', 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Lastname: $0.0028
+2024-09-28 15:50:28 - Coût pour Company: $0.0030
+2024-09-28 15:50:28 - Coût pour Lastname: $0.0034
+2024-09-28 15:50:28 - Réponse pour Company: {'thoughtProcess': 'The email content provided is empty and does not contain any information about the sender or their company. Therefore, it is impossible to extract the company information.', 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Company: $0.0037
+2024-09-28 15:50:28 - Réponse pour Lastname: {'thoughtProcess': "The email content is signed by 'Lucas' at the end. There is no last name provided in the email content.", 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Lastname: $0.0205
+2024-09-28 15:50:28 - Réponse pour Phone number: {'thoughtProcess': 'The provided context includes the subject and content of an email. There is no phone number mentioned in either the subject or the content of the email.', 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Phone number: $0.0028
+2024-09-28 15:50:28 - Réponse pour Phone number: {'thoughtProcess': 'The email content provided is empty and does not contain any phone number or any other information.', 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Phone number: $0.0032
+2024-09-28 15:50:28 - Réponse pour Firstname: {'thoughtProcess': 'The email content provided is empty and does not contain any information that can be used to extract a first name.', 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Firstname: $0.0033
+2024-09-28 15:50:28 - Réponse pour Company: {'thoughtProcess': 'The email content does not provide any explicit information about the company the sender, Lucas, works for. The email is focused on project details and communication with Kévin and James, but no company name is mentioned.', 'answer': 'null'}
+2024-09-28 15:50:28 - Coût pour Company: $0.0211
+2024-09-28 15:50:29 - Réponse pour Phone number: {'thoughtProcess': 'I have carefully read the provided email content and analyzed it for any mention of a phone number. There is no phone number mentioned in the email content.', 'answer': 'null'}
+2024-09-28 15:50:29 - Coût pour Phone number: $0.0206
+2024-09-28 15:50:29 - Écriture des en-têtes dans le fichier CSV.
+2024-09-28 15:50:29 - Tous les emails ont été traités.
+2024-09-28 15:50:29 - Coût total des requêtes : $0.0843
+2024-09-28 15:50:29 - Temps total d'exécution : 0:00:02.555248
+2024-09-28 15:50:29 - Temps moyen par email : 319.41 ms
+2024-09-28 15:50:29 - Coût moyen par email : $0.0105
+2024-09-28 15:50:29 - Total des contacts traités : 8
+2024-09-28 15:50:29 - Total des metas traitées : 10
+2024-09-28 15:50:29 - Total des metas trouvées : 0
+2024-09-28 15:50:29 - Total des valeurs non nulles pour Firstname: 0
+2024-09-28 15:50:29 - Total des valeurs non nulles pour Lastname: 0
+2024-09-28 15:50:29 - Total des valeurs non nulles pour Company: 0
+2024-09-28 15:50:29 - Total des valeurs non nulles pour Phone number: 0

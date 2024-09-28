@@ -1,4 +1,5 @@
-Company,email_address,Phone number,Lastname,Firstname
-Malt,jamesbidons2@gmail.com,07 55 50 28 07,COHEN,Hanna
-null,jamesbidons4@gmail.com,null,null,Lucas
-Malt,jamesbidons2@gmail.com,07 55 50 28 07,COHEN,Hanna
+Lastname,Phone number,Firstname,email_address,Company
+,,Lucas,jamesbidons4@gmail.com,
+COHEN,07 55 50 28 07,Hanna,jamesbidons2@gmail.com,Malt
+,,,Unknown sender,
+Standbridge,+33 6 45 34 28 98,James,james@biolevate.com,Biolevate
