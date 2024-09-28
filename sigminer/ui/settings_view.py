@@ -22,12 +22,12 @@ class SettingsView(QWidget):
     def init_ui(self):
         layout = QVBoxLayout()
 
-        # Label pour représenter le contenu de la page "Settings"
+        # Label for the "Settings" page
         self.page_label = QLabel("Settings", self)
-        self.page_label.setFont(QFont("Arial", weight=QFont.Bold))  # Set font to bold
+        self.page_label.setFont(QFont("Arial", weight=QFont.Bold))
         layout.addWidget(self.page_label)
 
-        # Champ pour entrer la clé d'API
+        # API Key input field
         self.api_key_label = QLabel("API Key:", self)
         self.api_key_input = QLineEdit(self)
         self.api_key_input.setPlaceholderText("Enter your API Key")
@@ -46,12 +46,12 @@ class SettingsView(QWidget):
             QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         )
 
-        # Bouton pour sauvegarder la clé d'API
+        # Button to save the API Key
         self.save_button = QPushButton("Save Changes", self)
         self.save_button.clicked.connect(self.save_api_key)
         layout.addWidget(self.save_button)
 
-        # Bouton pour revenir en arrière
+        # Button to go back to the previous view
         self.back_button = QPushButton("Back", self)
         self.back_button.clicked.connect(self.go_back_callback)
         layout.addWidget(self.back_button)

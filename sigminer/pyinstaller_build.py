@@ -1,5 +1,3 @@
-# my_project/pyinstaller_build.py
-
 import PyInstaller.__main__
 from pathlib import Path
 
@@ -8,15 +6,15 @@ def build():
     HERE = Path(__file__).parent.absolute()
     path_to_main = str(
         HERE / "app.py"
-    )  # Modifier selon l'emplacement de votre fichier Streamlit
+    )  # Modify according to the location of your Streamlit file
 
     PyInstaller.__main__.run(
         [
             path_to_main,
-            "--onefile",  # Crée un seul fichier exécutable
-            "--windowed",  # Évite d'ouvrir une fenêtre console
+            "--onefile",  # Create a single executable file
+            "--windowed",  # Avoid opening a console window
             "--name",
-            "my_streamlit_app",  # Nom de l'exécutable
-            # Ajoutez d'autres options si nécessaire
+            "my_streamlit_app",  # Name of the executable
+            # Add other options if necessary
         ]
     )

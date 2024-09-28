@@ -3,6 +3,7 @@ import os
 
 
 class AuthManager:
+    # Define the path to the token cache file
     CACHE_PATH = os.path.join(
         os.path.expanduser("~"),
         "Library",
@@ -31,9 +32,7 @@ class AuthManager:
         if "access_token" in result:
             self.save_cache()
             return result["access_token"]
-        raise Exception(
-            f"Impossible d'obtenir un token: {result.get('error_description')}"
-        )
+        raise Exception(f"Unable to obtain a token: {result.get('error_description')}")
 
     def save_cache(self):
         if self.token_cache.has_state_changed:

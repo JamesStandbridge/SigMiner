@@ -7,10 +7,9 @@ import os
 import base64
 from sigminer.config.config_manager import ConfigManager
 
-
 OutputCls = TypeVar("OutputCls", bound=BaseModel)
 
-# Initialize ConfigManager and set the API key from the config
+# Initialize ConfigManager and set the API key from the configuration
 config_manager = ConfigManager()
 api_key = config_manager.get_api_key()
 if api_key:
@@ -18,10 +17,7 @@ if api_key:
 
 
 class MultiModalLLM:
-    def __init__(
-        self,
-        default_model: str = "gpt-4o-mini-2024-07-18",
-    ):
+    def __init__(self, default_model: str = "gpt-4o"):
         self.default_model = str(default_model)
 
     @overload

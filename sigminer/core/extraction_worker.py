@@ -18,6 +18,7 @@ from sigminer.core.utils.prompt_models import (
 
 class ExtractionWorker(QThread):
     log_signal = pyqtSignal(str)
+    progress_signal = pyqtSignal(int)  # Signal for updating progress bar
 
     def __init__(self, access_token: str, launcher_config: LauncherConfig):
         super().__init__()
@@ -60,25 +61,21 @@ class ExtractionWorker(QThread):
             async with aiofiles.open(self.csv_file_path, mode="r") as csvfile:
                 content = await csvfile.readlines()
                 if not content:
-                    await self.log_message(f"The CSV file is empty.")
+                    await self.log_message("The CSV file is empty.")
                     return
                 reader = csv.DictReader(content)
                 if reader.fieldnames is None:
-                    await self.log_message(f"The CSV file is corrupted or empty.")
+                    await self.log_message("The CSV file is corrupted or empty.")
                     return
-                # Save existing headers
                 self.headers = set(reader.fieldnames)
-                # Update existing contacts
                 self.existing_contacts = {row["email_address"]: row for row in reader}
 
     async def write_final_csv(self):
         """Writes the updated contacts to the CSV file."""
-        # Ensure headers include all contact fields
         all_fieldnames = set(self.headers)
         for field in self.launcher_config["fields"]:
             all_fieldnames.add(field["field_name"])
 
-        # Ensure 'email_address' is always the first column
         all_fieldnames = ["email_address"] + [
             field for field in all_fieldnames if field != "email_address"
         ]
@@ -86,9 +83,8 @@ class ExtractionWorker(QThread):
         async with aiofiles.open(self.csv_file_path, mode="w", newline="") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=all_fieldnames)
             await self.log_message("Writing headers to the CSV file.")
-            await writer.writeheader()  # Write headers
+            await writer.writeheader()
             for contact in self.existing_contacts.values():
-                # Write only fields that exist in the headers
                 contact_filtered = {key: contact.get(key, "") for key in all_fieldnames}
                 await writer.writerow(contact_filtered)
 
@@ -102,14 +98,14 @@ class ExtractionWorker(QThread):
         images = email.get("images", [])
 
         await self.log_message(
-            f"Processing meta '{field_name}' for email '{email_subject}'"
+            f"Processing metadata '{field_name}' for email '{email_subject}'"
         )
 
         MetaClass: Type[BaseModel] = self.create_dynamic_model(
             field,
-            "This class defines the metas and the required format for responses.",
+            "This class defines the metadata and the required format for responses.",
         )
-        query = f"Extract this meta: {field_name}. If impossible, return null."
+        query = f"Extract this metadata: {field_name}. If impossible, return null."
 
         chunks = [
             f"<email_subject>{email_subject}</email_subject>",
@@ -132,13 +128,12 @@ class ExtractionWorker(QThread):
             self.meta_non_null_counts[field_name] += 1
 
         await self.log_message(
-            f"{email_address} Response for {field_name} : {answer.dict()}"
+            f"Response for {field_name} from {email_address}: {answer.dict()}"
         )
-        # await self.log_message(f"Cost for {field_name}: ${cost:.4f}")
         return answer
 
-    async def process_email(self, email: dict):
-        """Processes an email and updates missing or null metas."""
+    async def process_email(self, email: dict, total_emails: int):
+        """Processes an email and updates missing or null metadata."""
         email_address = (
             email.get("from", {}).get("emailAddress", {}).get("address", None)
         )
@@ -157,13 +152,10 @@ class ExtractionWorker(QThread):
                 return
 
         if email_address in self.existing_contacts:
-            # Existing contact, update missing or overwritable fields
             results = self.existing_contacts[email_address]
         else:
-            # New contact
             results = {"email_address": email_address}
 
-        # Fetch images for the email
         message_id = email.get("id", "")
         images = self.email_manager.get_images_from_text(
             email.get("body", {}).get("content", ""), message_id
@@ -188,29 +180,32 @@ class ExtractionWorker(QThread):
 
         self.existing_contacts[email_address] = results
         self.total_contacts_processed += 1
+        # Emit the progress update
+        progress = int((self.total_contacts_processed / total_emails) * 100)
+        self.progress_signal.emit(progress)
 
     async def launch_extraction(self):
         """Launches the extraction process and updates the CSV file at the end."""
-        await self.log_message(f"Launcher Configuration: {self.launcher_config}")
+        await self.log_message(f"Launcher configuration: {self.launcher_config}")
 
         max_emails = self.launcher_config.get("max_emails", None)
         await self.log_message(
-            f"Max number of emails to process: {max_emails or 'None'}"
+            f"Maximum number of emails to process: {max_emails or 'None'}"
         )
 
-        # Load existing contacts from the CSV file
         await self.load_existing_contacts()
 
         emails = self.email_manager.get_emails(max_emails)
 
-        await self.log_message(f"Email extraction completed. Total: {len(emails)}")
+        await self.log_message(
+            f"Email extraction completed. Total emails processed: {len(emails)}"
+        )
 
         start_time = datetime.now()
-        tasks = [self.process_email(email) for email in emails]
+        tasks = [self.process_email(email, len(emails) - 1) for email in emails]
         await asyncio.gather(*tasks)
         end_time = datetime.now()
 
-        # Update the CSV file with the new data
         await self.write_final_csv()
 
         self.total_time = end_time - start_time
@@ -219,7 +214,7 @@ class ExtractionWorker(QThread):
         )
         average_cost_per_email = self.total_cost / len(emails) if emails else 0.0
 
-        await self.log_message("All emails have been processed.")
+        await self.log_message("All emails have been processed successfully.")
         await self.log_message(f"Total request cost: ${self.total_cost:.4f}")
         await self.log_message(f"Total execution time: {self.total_time}")
         await self.log_message(
@@ -229,19 +224,17 @@ class ExtractionWorker(QThread):
         await self.log_message(
             f"Total contacts processed: {self.total_contacts_processed}"
         )
-        await self.log_message(f"Total metas processed: {self.total_meta_processed}")
-        await self.log_message(f"Total metas found: {self.total_meta_found}")
+        await self.log_message(f"Total metadata processed: {self.total_meta_processed}")
+        await self.log_message(f"Total metadata found: {self.total_meta_found}")
 
-        # Log non-null values for each meta
         for field_name, count in self.meta_non_null_counts.items():
             await self.log_message(f"Total non-null values for {field_name}: {count}")
 
-        # Log total cost for each meta
         for field_name, cost in self.meta_costs.items():
             await self.log_message(f"Total cost for {field_name}: ${cost:.4f}")
 
     def create_dynamic_model(self, meta: Dict, model_description="") -> Type[BaseModel]:
-        """Dynamically creates a Pydantic model based on the configuration of a meta."""
+        """Dynamically creates a Pydantic model based on the configuration of a metadata."""
         fields = {}
         description = meta.get("field_name", "")
         if guideline := meta.get("guideline"):

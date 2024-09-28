@@ -24,11 +24,11 @@ class AuthView(QWidget):
     def init_ui(self):
         layout = QVBoxLayout()
 
-        # Ajouter des marges pour tout le formulaire
+        # Set margins and spacing for the entire form
         layout.setContentsMargins(40, 40, 40, 40)
         layout.setSpacing(15)
 
-        # Titre de l'authentification
+        # Authentication title
         title_label = QLabel("Authentication", self)
         title_label.setFont(QFont("Arial", 16, QFont.Bold))
         title_label.setAlignment(Qt.AlignCenter)
@@ -38,7 +38,7 @@ class AuthView(QWidget):
         input_container = QVBoxLayout()
         input_container.setSpacing(10)
 
-        # Label et champ de saisie pour le Client ID
+        # Client ID label and input field
         client_id_label = QLabel("Client ID:", self)
         client_id_label.setFont(QFont("Arial", 12))
         input_container.addWidget(client_id_label)
@@ -52,7 +52,7 @@ class AuthView(QWidget):
         )
         input_container.addWidget(self.client_id_input)
 
-        # Label et champ de saisie pour le Tenant ID
+        # Tenant ID label and input field
         tenant_id_label = QLabel("Tenant ID:", self)
         tenant_id_label.setFont(QFont("Arial", 12))
         input_container.addWidget(tenant_id_label)
@@ -75,7 +75,7 @@ class AuthView(QWidget):
         spacer.setFrameShadow(QFrame.Sunken)
         layout.addWidget(spacer)
 
-        # Bouton d'authentification avec style
+        # Authentication button with style
         self.auth_button = QPushButton("Authenticate", self)
         self.auth_button.setFont(QFont("Arial", 12, QFont.Bold))
         self.auth_button.setStyleSheet(
@@ -104,7 +104,7 @@ class AuthView(QWidget):
         client_id = self.client_id_input.text()
         tenant_id = self.tenant_id_input.text()
 
-        # Sauvegarder séparément le client_id et tenant_id
+        # Save client_id and tenant_id separately
         self.config_manager.set_client_id(client_id)
         self.config_manager.set_tenant_id(tenant_id)
 

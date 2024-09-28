@@ -27,20 +27,19 @@ class FieldFormView(QWidget):
         layout = QVBoxLayout()
         layout.setSpacing(10)
 
-        # Cadre autour du field form view
+        # Frame around the field form view
         frame = QFrame(self)
         frame.setFrameShape(QFrame.Box)
-        frame.setLineWidth(1)  # Make the border of the frame lighter
+        frame.setLineWidth(1)
         frame.setObjectName("fieldFrame")
         frame.setStyleSheet("#fieldFrame { border: 1px solid #d4d4d4; }")
         frame_layout = QVBoxLayout(frame)
         frame_layout.setSpacing(10)
         frame.setFixedHeight(180)  # Adjusted height to accommodate the new checkbox
 
-        # Bouton de suppression avec une petite croix en haut à droite du cadre
+        # Remove button with a small cross at the top right of the frame
         remove_button = QPushButton("x", self)
         remove_button.setFont(QFont("Arial", 12, QFont.Bold))
-
         remove_button.setStyleSheet(
             """
             QPushButton {
@@ -60,7 +59,7 @@ class FieldFormView(QWidget):
         button_layout.addWidget(remove_button)
         frame_layout.addLayout(button_layout)
 
-        # Champ pour le nom du champ
+        # Field name input
         self.field_name_input = QLineEdit(self)
         self.field_name_input.setPlaceholderText("Field Name")
         self.field_name_input.setText(field_name)
@@ -70,7 +69,7 @@ class FieldFormView(QWidget):
         field_name_layout.addWidget(self.field_name_input)
         frame_layout.addLayout(field_name_layout)
 
-        # Champ pour la guideline
+        # Guideline input
         self.guideline_input = QLineEdit(self)
         self.guideline_input.setPlaceholderText("Guideline")
         self.guideline_input.setText(guideline)
@@ -89,7 +88,7 @@ class FieldFormView(QWidget):
         self.setLayout(layout)
 
     def remove_field(self):
-        self.remove_callback(self)  # Appeler le callback pour supprimer ce champ
+        self.remove_callback(self)  # Call the callback to remove this field
 
     def get_field_data(self):
         return {

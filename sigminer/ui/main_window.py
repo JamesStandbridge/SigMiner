@@ -18,11 +18,11 @@ class MainWindow(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        # Initialisation des vues
+        # Initialize views
         self.auth_view = AuthView(self.on_authenticated)
         self.stack.addWidget(self.auth_view)
 
-        # Passer un callback pour revenir en arrière
+        # Pass a callback to return to the email view
         self.settings_view = SettingsView(self.show_email_view)
         self.stack.addWidget(self.settings_view)
 
@@ -30,13 +30,13 @@ class MainWindow(QMainWindow):
         self.menu_bar = QMenuBar(self)
         self.setMenuBar(self.menu_bar)
 
-        # Menu "Options"
+        # "Options" menu
         options_menu = self.menu_bar.addMenu("Options")
 
-        # Ajout de l'option "Settings"
+        # Add "Settings" option
         self.settings_action = QAction("Settings", self)
         self.settings_action.triggered.connect(self.show_settings)
-        self.settings_action.setEnabled(False)  # Désactivé par défaut
+        self.settings_action.setEnabled(False)  # Disabled by default
         options_menu.addAction(self.settings_action)
 
         self.setWindowTitle("Sigminer")
@@ -50,18 +50,18 @@ class MainWindow(QMainWindow):
         self.move(center_point.x() - window_geometry.width() // 2, 0)
 
     def on_authenticated(self, access_token):
-        # Activer le bouton des réglages après l'authentification
+        # Enable the settings button after authentication
         self.settings_action.setEnabled(True)
 
-        # Ajouter et basculer vers la vue email
+        # Add and switch to the email view
         self.email_view = EmailView(access_token)
         self.stack.addWidget(self.email_view)
         self.stack.setCurrentWidget(self.email_view)
 
     def show_settings(self):
-        # Afficher la page des réglages
+        # Display the settings page
         self.stack.setCurrentWidget(self.settings_view)
 
     def show_email_view(self):
-        # Retourner à la page email
+        # Return to the email page
         self.stack.setCurrentWidget(self.email_view)

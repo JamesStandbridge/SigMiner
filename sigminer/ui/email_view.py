@@ -30,10 +30,10 @@ class EmailView(QWidget):
         self.access_token = access_token
         self.config_manager = ConfigManager()
         self.field_forms = []
-        self.excluded_hosts = []  # Liste des domaines à exclure
-        self.include_mode = False  # Par défaut, "include" mode
+        self.excluded_hosts = []  # List of domains to exclude
+        self.include_mode = False  # Default to "include" mode
 
-        self.original_preset_hash = None  # Stocke le hash du preset chargé
+        self.original_preset_hash = None  # Stores the hash of the loaded preset
         self.init_ui()
 
     def init_ui(self):
@@ -53,7 +53,7 @@ class EmailView(QWidget):
         # Set fixed width for the window
         self.setFixedWidth(800)
 
-        # Sélection des presets
+        # Preset selection
         self.preset_selector = QComboBox(self)
         self.preset_selector.addItems(
             ["Select preset"] + self.config_manager.get_all_presets()
@@ -69,7 +69,7 @@ class EmailView(QWidget):
         scroll_area = QScrollArea(self)
         scroll_area.setWidgetResizable(True)
 
-        # Espace pour les champs d'extraction
+        # Space for extraction fields
         fields_container = QWidget()
         self.fields_layout = QVBoxLayout(fields_container)
         scroll_area.setWidget(fields_container)
@@ -77,12 +77,13 @@ class EmailView(QWidget):
 
         # Set maximum height for scroll area to avoid full overflow
         scroll_area.setFixedHeight(300)
-        # Bouton pour ajouter un champ
+
+        # Button to add a field
         self.add_field_button = QPushButton("Add Field", self)
         self.add_field_button.clicked.connect(lambda: self.add_field_form())
         main_layout.addWidget(self.add_field_button)
 
-        # Section pour la liste des domaines d'e-mails à exclure
+        # Section for the list of email domains to exclude
         self.hosts_label = QLabel("Excluded email hosts (double-click to delete):")
         main_layout.addWidget(self.hosts_label)
 
@@ -94,19 +95,17 @@ class EmailView(QWidget):
         main_layout.addWidget(self.excluded_hosts_input)
 
         self.excluded_hosts_list = QListWidget(self)
-        self.excluded_hosts_list.itemDoubleClicked.connect(
-            self.remove_excluded_host
-        )  # Ajout d'un signal pour double-clic
+        self.excluded_hosts_list.itemDoubleClicked.connect(self.remove_excluded_host)
         main_layout.addWidget(self.excluded_hosts_list)
 
-        # Switch pour indiquer si la liste de hosts est à inclure ou à exclure
+        # Switch to indicate if the host list is to include or exclude
         self.host_mode_switch = QComboBox(self)
         self.host_mode_switch.addItems(["Include Hosts", "Exclude Hosts"])
         self.host_mode_switch.setCurrentIndex(0 if self.include_mode else 1)
         self.host_mode_switch.currentIndexChanged.connect(self.on_host_mode_changed)
         main_layout.addWidget(self.host_mode_switch)
 
-        # Bouton pour choisir le chemin de fichier
+        # Button to choose the file path
         self.file_path_button = QPushButton("Select File to Save Contacts", self)
         self.file_path_button.clicked.connect(self.open_file_dialog)
         main_layout.addWidget(self.file_path_button)
@@ -121,7 +120,8 @@ class EmailView(QWidget):
             "Enter max emails to process (leave empty for no max)"
         )
         main_layout.addWidget(self.max_emails_input)
-        # Champ select pour le modèle OpenAI
+
+        # Label for OpenAI model selection
         self.model_selector_label = QLabel("Select OpenAI Model:")
         main_layout.addWidget(self.model_selector_label)
 
@@ -147,7 +147,7 @@ class EmailView(QWidget):
         # Layout for save and delete preset buttons
         preset_buttons_layout = QHBoxLayout()
 
-        # Bouton pour sauvegarder un preset (initialement caché)
+        # Button to save a preset (initially hidden)
         self.save_preset_button = QPushButton("Save Preset", self)
         self.save_preset_button.clicked.connect(self.save_preset)
         self.save_preset_button.hide()
@@ -165,7 +165,7 @@ class EmailView(QWidget):
         """
         )
 
-        # Bouton pour supprimer un preset
+        # Button to delete a preset
         self.delete_preset_button = QPushButton("Delete Preset", self)
         self.delete_preset_button.clicked.connect(self.delete_preset)
         self.delete_preset_button.setStyleSheet(
@@ -191,7 +191,7 @@ class EmailView(QWidget):
         spacer.setFrameShadow(QFrame.Sunken)
         main_layout.addWidget(spacer)
 
-        # Bouton d'extraction
+        # Extraction button
         self.launch_button = QPushButton("Launch Extraction", self)
         self.launch_button.setFont(QFont("Arial", 12, QFont.Bold))
         self.launch_button.setStyleSheet(
@@ -242,7 +242,7 @@ class EmailView(QWidget):
                 "model": self.model_selector.currentText(),  # Add selected model to config
             }
 
-            # Créer la modal et lancer le processus en arrière-plan
+            # Create the modal and launch the process in the background
             modal = ExtractionView(self, self.access_token, config_data)
             modal.exec_()
 
@@ -259,9 +259,9 @@ class EmailView(QWidget):
         )
         if file_path:
             if not file_path.endswith(".csv"):
-                file_path += ".csv"  # Forcer l'extension CSV si elle n'est pas présente
+                file_path += ".csv"  # Force CSV extension if not present
             self.file_path_button.setText(file_path)  # Use the file path as button text
-            self.on_field_modified()  # Mettre à jour l'état de modification
+            self.on_field_modified()  # Update modification state
 
     def add_field_form(self, field_name="", guideline="", can_be_overwritten=False):
         field_form = FieldFormView(
@@ -293,7 +293,7 @@ class EmailView(QWidget):
             self.on_field_modified()
 
     def remove_excluded_host(self, item):
-        # Suppression du domaine exclu lors du double-clic
+        # Remove the excluded domain on double-click
         host = item.text()
         if host in self.excluded_hosts:
             self.excluded_hosts.remove(host)
@@ -363,7 +363,7 @@ class EmailView(QWidget):
             preset_data = self.config_manager.get_preset(preset_name)
             self.clear_field_forms()
 
-            # Charger les champs d'extraction
+            # Load extraction fields
             for field in preset_data.get("fields", []):
                 self.add_field_form(
                     field["field_name"],
@@ -371,26 +371,26 @@ class EmailView(QWidget):
                     field.get("can_be_overwritten", False),
                 )
 
-            # Charger les domaines d'emails
+            # Load email domains
             self.excluded_hosts = preset_data.get("excluded_hosts", [])
             self.excluded_hosts_list.clear()
             for host in self.excluded_hosts:
                 self.excluded_hosts_list.addItem(host)
 
-            # Charger l'état du switch
+            # Load switch state
             self.host_mode_switch.setCurrentIndex(
                 0 if preset_data.get("include_mode", True) else 1
             )
 
-            # Charger le chemin du fichier
+            # Load file path
             file_path = preset_data.get("file_path", "No file selected")
             self.file_path_button.setText(file_path)  # Use button text for file path
 
-            # Charger le nombre maximum d'emails
+            # Load max emails
             max_emails = preset_data.get("max_emails", "")
             self.max_emails_input.setText(max_emails)
 
-            # Charger le modèle OpenAI
+            # Load OpenAI model
             model = preset_data.get("model", "")
             index = self.model_selector.findText(model)
             if index >= 0:
