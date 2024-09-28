@@ -85,8 +85,9 @@ class ExtractionWorker(QThread):
         if email_address in self.existing_contacts:
             row = self.existing_contacts[email_address]
             for key, value in results.items():
-                if key not in row or row[key] in ["", "0", "null"]:
-                    row[key] = value  # Update missing or null fields
+                # Update missing or null fields
+                if key not in row or row[key] in ["", "0", "null", None]:
+                    row[key] = value
             results = row  # Use updated row
 
         # Add missing headers (fields) to the results and update the header set
