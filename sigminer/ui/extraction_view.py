@@ -79,7 +79,7 @@ class ExtractionView(QDialog):
                 """
             )
         else:
-            close_button.setText("Finish process")
+            close_button.setText("Complete process")
             close_button.setStyleSheet(
                 """
                 QPushButton {

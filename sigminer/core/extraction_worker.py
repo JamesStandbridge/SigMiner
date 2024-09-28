@@ -233,6 +233,10 @@ class ExtractionWorker(QThread):
         for field_name, cost in self.meta_costs.items():
             await self.log_message(f"Total cost for {field_name}: ${cost:.4f}")
 
+        await self.log_message(
+            "The extraction process is now complete. You may safely close this thread."
+        )
+
     def create_dynamic_model(self, meta: Dict, model_description="") -> Type[BaseModel]:
         """Dynamically creates a Pydantic model based on the configuration of a metadata."""
         fields = {}

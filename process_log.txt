@@ -777,3 +777,83 @@
 2024-09-28 17:50:18 - Total cost for Company: $0.0237
 2024-09-28 17:50:18 - Total cost for Phone number: $0.2630
 2024-09-28 17:50:18 - Total cost for Sexe: $0.3014
+2024-09-28 17:52:20 - Launcher configuration: {'fields': [{'field_name': 'Firstname', 'guideline': '', 'can_be_overwritten': True}, {'field_name': 'Lastname', 'guideline': '', 'can_be_overwritten': False}, {'field_name': 'Company', 'guideline': "Extracts the company of the sender of the email, not a company just mentioned. Make sure you understand which company the person works for. For example, for headhunters, don't indicate the company for which the headhunter is looking for an employee, but which consultancy company they work for.", 'can_be_overwritten': False}, {'field_name': 'Phone number', 'guideline': '', 'can_be_overwritten': False}, {'field_name': 'Sexe', 'guideline': '', 'can_be_overwritten': False}], 'excluded_hosts': [], 'include_mode': False, 'file_path': '/Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv', 'max_emails': None, 'model': 'gpt-4o'}
+2024-09-28 17:52:20 - Maximum number of emails to process: None
+2024-09-28 17:52:20 - Loading existing contacts from /Users/jamesstandbridge/it-creative/atelier-de-la-boiserie/SigMiner/baleine.csv
+2024-09-28 17:52:21 - Email extraction completed. Total emails processed: 10
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'Premier contact'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'RE: Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 17:52:22 - Processing metadata 'Lastname' for email 'Résumé'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'Résumé'
+2024-09-28 17:52:22 - Processing metadata 'Company' for email 'Résumé'
+2024-09-28 17:52:22 - Processing metadata 'Phone number' for email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'Résumé'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'Premier contact'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'Celebrate'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'RE: Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 17:52:22 - Processing metadata 'Phone number' for email 'Celebrate'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'Celebrate'
+2024-09-28 17:52:22 - Processing metadata 'Phone number' for email 'Résumé'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'Malt - Mission de Développeur fullstack (Javascript et .Net) chez L'Oréal'
+2024-09-28 17:52:22 - Processing metadata 'Phone number' for email 'Premier contact'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'First contact'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'Premier contact'
+2024-09-28 17:52:22 - Processing metadata 'Phone number' for email 'test'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'test'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'test'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'First contact'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'TEST'
+2024-09-28 17:52:22 - Processing metadata 'Firstname' for email 'TEST'
+2024-09-28 17:52:22 - Processing metadata 'Company' for email 'TEST'
+2024-09-28 17:52:22 - Processing metadata 'Phone number' for email 'TEST'
+2024-09-28 17:52:22 - Processing metadata 'Lastname' for email 'TEST'
+2024-09-28 17:52:22 - Processing metadata 'Sexe' for email 'Premier contact'
+2024-09-28 17:52:23 - Response for Firstname from james.standbridge@atelierdelaboiserie.fr: {'thoughtProcess': "The email content includes a signature from 'Hanna COHEN,' who identifies herself as a Recruitment Consultant. The first name 'Hanna' is clearly mentioned in the context.", 'answer': 'Hanna'}
+2024-09-28 17:52:23 - Response for Company from jamesbidons4@gmail.com: {'thoughtProcess': 'The email content provided does not contain any information about a company. It is a test email with no relevant details.', 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Firstname from jamesbidons4@gmail.com: {'thoughtProcess': "The email content includes a sign-off with the name 'Lucas'. This is the only first name mentioned in the email.", 'answer': 'Lucas'}
+2024-09-28 17:52:23 - Response for Sexe from jamesbidons2@gmail.com: {'thoughtProcess': 'The email content does not provide any explicit information about the gender (Sexe) of the individuals mentioned. The names and titles do not offer definitive clues about gender either.', 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Sexe from james@biolevate.com: {'thoughtProcess': "The email content and signature do not provide any information regarding the gender (Sexe) of the sender or any other individual. The name 'James Standbridge' is mentioned, but names alone are not reliable indicators of gender.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Lastname from jamesbidons4@gmail.com: {'thoughtProcess': "The context provided includes an email subject and email content, but there is no mention of any person's name, let alone a last name.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Firstname from jamesbidons2@gmail.com: {'thoughtProcess': "The email content includes a signature block at the end, which contains the name 'Hanna COHEN'. The first name 'Hanna' can be extracted from this signature.", 'answer': 'Hanna'}
+2024-09-28 17:52:23 - Response for Phone number from jamesbidons4@gmail.com: {'thoughtProcess': "The provided context includes the subject and content of an email. The content is a simple HTML structure with a 'div' containing the text 'contenu test'. There is no phone number present in the given context.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Firstname from jamesbidons2@gmail.com: {'thoughtProcess': "The email content includes a greeting that starts with 'Hello James,' which indicates that the first name of the recipient is James.", 'answer': 'James'}
+2024-09-28 17:52:23 - Response for Firstname from jamesbidons4@gmail.com: {'thoughtProcess': "The context provided includes an email subject and email content, but there is no mention of any person's name, let alone a first name.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Company from jamesbidons4@gmail.com: {'thoughtProcess': "The email content does not mention any company name or provide any information that directly indicates the sender's company. The sender, Lucas, discusses various tasks and projects but does not reference a specific company.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Phone number from jamesbidons4@gmail.com: {'thoughtProcess': 'I have carefully reviewed the provided email content. The email does not contain any phone number. Therefore, it is impossible to extract a phone number from this context.', 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Sexe from jamesbidons2@gmail.com: {'thoughtProcess': 'The email content provided does not contain any information about the gender (Sexe) of any individual. The content is focused on an event invitation and details about the event, but it does not mention the gender of any person involved.', 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Phone number from jamesbidons2@gmail.com: {'thoughtProcess': 'I will carefully read through the provided email content to identify any phone numbers mentioned. The phone number is typically formatted in a recognizable pattern, such as groups of digits separated by spaces or dashes.', 'answer': '07 55 50 28 07'}
+2024-09-28 17:52:23 - Response for Firstname from jamesbidons2@gmail.com: {'thoughtProcess': "The provided context is an email content, but it does not contain any personal names or first names. The content is mostly about design topics, promotions, and articles. There is no mention of any individual's first name.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Sexe from jamesbidons2@gmail.com: {'thoughtProcess': "The provided context is an email content related to updates and features of V7 Go. It includes information about new models, project permissions, templates, and job openings. There is no mention of any individual's gender or any metadata related to 'Sexe'.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Sexe from jamesbidons2@gmail.com: {'thoughtProcess': "The provided context is an email content and subject, which does not contain any information about 'Sexe'. There are no references to gender or sex in the text.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Lastname from jamesbidons4@gmail.com: {'thoughtProcess': "The email content is signed by 'Lucas' at the end. There is no last name provided in the email content.", 'answer': 'null'}
+2024-09-28 17:52:23 - Response for Phone number from jamesbidons2@gmail.com: {'thoughtProcess': 'I carefully reviewed the provided email content for any mention of a phone number. The email contains various sections, including promotional content, articles, and links, but there is no phone number mentioned anywhere in the text.', 'answer': 'null'}
+2024-09-28 17:52:24 - Response for Sexe from james.standbridge@atelierdelaboiserie.fr: {'thoughtProcess': 'The email content does not provide any explicit information about the gender (Sexe) of the individuals mentioned. The names provided (James Standbridge and Hanna Cohen) could potentially give a hint, but they are not definitive indicators of gender. Therefore, it is impossible to determine the Sexe from the given context.', 'answer': 'null'}
+2024-09-28 17:52:24 - Response for Sexe from jamesbidons4@gmail.com: {'thoughtProcess': "The context provided includes an email subject and email content, but there is no mention of 'Sexe' or any related information that could be used to determine it.", 'answer': 'null'}
+2024-09-28 17:52:24 - Response for Phone number from jamesbidons2@gmail.com: {'thoughtProcess': 'I carefully reviewed the provided email content for any mention of a phone number. The email contains various sections, including updates, features, and contact information, but there is no phone number mentioned anywhere in the content.', 'answer': 'null'}
+2024-09-28 17:52:24 - Response for Firstname from jamesbidons2@gmail.com: {'thoughtProcess': "I need to identify any first names mentioned in the provided email content. The only name mentioned is 'Bill Leaver,' which appears in the signature section of the email. Therefore, the first name is 'Bill.'", 'answer': 'Bill'}
+2024-09-28 17:52:24 - Response for Phone number from jamesbidons2@gmail.com: {'thoughtProcess': 'I carefully reviewed the provided email content for any mention of a phone number. The email includes details about an event, agenda, and contact information, but there is no phone number mentioned anywhere in the text.', 'answer': 'null'}
+2024-09-28 17:52:24 - Response for Firstname from james@biolevate.com: {'thoughtProcess': "The email signature at the end of the email content contains the name 'James Standbridge'. The first name is 'James'.", 'answer': 'James'}
+2024-09-28 17:52:24 - Response for Firstname from j.standbridge@boeki.fr: {'thoughtProcess': "The image contains the name 'Paul-Jérôme Smadja'. The first name is 'Paul-Jérôme'.", 'answer': 'Paul-Jérôme'}
+2024-09-28 17:52:24 - Response for Sexe from j.standbridge@boeki.fr: {'thoughtProcess': "The context provided includes an email subject, email content, and an image of a signature block. The email content does not explicitly mention the gender (Sexe) of the individual. The image contains a name, 'Paul-Jérôme Smadja,' which traditionally suggests a male gender. However, without explicit confirmation, it is not possible to definitively determine the gender based solely on the name.", 'answer': 'null'}
+2024-09-28 17:52:26 - Response for Sexe from jamesbidons4@gmail.com: {'thoughtProcess': "The email content provided does not contain any explicit mention of the sender's or recipients' gender. The names mentioned (Kévin, James, and Lucas) are typically male names, but this is not definitive proof of gender. Therefore, it is impossible to determine the 'Sexe' based on the given context.", 'answer': 'null'}
+2024-09-28 17:52:26 - Writing headers to the CSV file.
+2024-09-28 17:52:26 - All emails have been processed successfully.
+2024-09-28 17:52:26 - Total request cost: $0.9112
+2024-09-28 17:52:26 - Total execution time: 0:00:04.544548
+2024-09-28 17:52:26 - Average time per email: 454.45 ms
+2024-09-28 17:52:26 - Average cost per email: $0.0911
+2024-09-28 17:52:26 - Total contacts processed: 9
+2024-09-28 17:52:26 - Total metadata processed: 28
+2024-09-28 17:52:26 - Total metadata found: 8
+2024-09-28 17:52:26 - Total non-null values for Firstname: 7
+2024-09-28 17:52:26 - Total non-null values for Lastname: 0
+2024-09-28 17:52:26 - Total non-null values for Company: 0
+2024-09-28 17:52:26 - Total non-null values for Phone number: 1
+2024-09-28 17:52:26 - Total non-null values for Sexe: 0
+2024-09-28 17:52:26 - Total cost for Firstname: $0.2993
+2024-09-28 17:52:26 - Total cost for Lastname: $0.0232
+2024-09-28 17:52:26 - Total cost for Company: $0.0239
+2024-09-28 17:52:26 - Total cost for Phone number: $0.2633
+2024-09-28 17:52:26 - Total cost for Sexe: $0.3016
+2024-09-28 17:52:26 - The extraction process is now complete. You may safely close this thread.
