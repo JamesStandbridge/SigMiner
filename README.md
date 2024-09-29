@@ -15,27 +15,39 @@ SigMiner is a desktop application designed to extract metadata from emails using
 ## Images
 
 ### Auth
+
 ![Auth](doc/img/auth.png)
+
 This image shows the authentication screen where users can enter their credentials to log in.
 
 ### Click Preferences
+
 ![Click Preferences](doc/img/click_preferences.png)
+
 This image demonstrates how to access the preferences menu to configure various settings.
 
 ### API Key
+
 ![API Key](doc/img/api_key.png)
+
 This image illustrates the screen where users can input their OpenAI API key for metadata extraction.
 
 ### Config 1
+
 ![Config 1](doc/img/config_1.png)
+
 This image displays the first part of the configuration settings, where users can set up extraction fields and other parameters.
 
 ### Config 2
+
 ![Config 2](doc/img/config_2.png)
+
 This image shows the second part of the configuration settings, including options for email host filtering and preset management.
 
 ### Process End
+
 ![Process End](doc/img/process_end.png)
+
 This image captures the end of the extraction process, showing the final status and any relevant logs or messages.
 
 ## Installation
