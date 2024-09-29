@@ -139,6 +139,9 @@ class ExtractionWorker(QThread):
         )
 
         if email_address is None:
+            self.total_contacts_processed += 1
+            progress = int((self.total_contacts_processed / total_emails) * 100)
+            self.progress_signal.emit(progress)
             return
 
         email_host = email_address.split("@")[-1]
@@ -147,8 +150,14 @@ class ExtractionWorker(QThread):
 
         if excluded_hosts:
             if include_mode and email_host not in excluded_hosts:
+                self.total_contacts_processed += 1
+                progress = int((self.total_contacts_processed / total_emails) * 100)
+                self.progress_signal.emit(progress)
                 return
             elif not include_mode and email_host in excluded_hosts:
+                self.total_contacts_processed += 1
+                progress = int((self.total_contacts_processed / total_emails) * 100)
+                self.progress_signal.emit(progress)
                 return
 
         if email_address in self.existing_contacts:

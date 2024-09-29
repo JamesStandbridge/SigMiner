@@ -1,6 +1,5 @@
-email_address,Lastname,Company,Firstname,Sexe,Phone number
-jamesbidons4@gmail.com,,,Lucas,,
-jamesbidons2@gmail.com,,Dribbble,,,
-james.standbridge@atelierdelaboiserie.fr,"Standbridge, Cohen",Malt,Hanna,,07 55 50 28 07
-james@biolevate.com,Standbridge,Biolevate,James,,+33 6 45 34 28 98
-j.standbridge@boeki.fr,Smadja,Boeki - Agence web & créative,Paul-Jérôme,,+334 42 22 57 34
+email_address,Sexe,Lastname,Phone number,Firstname,Company
+jamesbidons4@gmail.com,,,,Lucas,
+jamesbidons2@gmail.com,,,,,Dribbble
+james@biolevate.com,,Standbridge,+33 6 45 34 28 98,James,Biolevate
+j.standbridge@boeki.fr,male,Smadja,+334 42 22 57 34,Paul-Jérôme,Boeki - Agence web & créative

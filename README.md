@@ -12,6 +12,26 @@ SigMiner is a desktop application designed to extract metadata from emails using
 -   **Settings Management**: Manage API keys, authentication credentials, and other settings through the app.
 -   **CSV Export**: Export extracted email data into a CSV file with customizable fields.
 
+## Images
+
+### API Key
+![API Key](doc/img/api_key.png)
+
+### Auth
+![Auth](doc/img/auth.png)
+
+### Click Preferences
+![Click Preferences](doc/img/click_preferences.png)
+
+### Config 1
+![Config 1](doc/img/config_1.png)
+
+### Config 2
+![Config 2](doc/img/config_2.png)
+
+### Process End
+![Process End](doc/img/process_end.png)
+
 ## Installation
 
 ### Prerequisites
@@ -147,3 +167,5 @@ poetry run pytest
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+
