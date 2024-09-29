@@ -14,12 +14,19 @@ pillow = "^10.4.0"
 pyqt5 = "^5.15.11"
 aiofiles = "^24.1.0"
 litellm = "^1.48.2"
+pytest = "^8.3.3"
+coverage = "^7.6.1"
+poethepoet = "^0.29.0"
 
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.1"
 pyinstaller = "^6.10.0"
 ipykernel = "^6.29.5"
+
+[tool.poe.tasks]
+test = "pytest -s"
+coverage = "sh -c 'coverage run -m pytest && coverage report'"
 
 [build-system]
 requires = ["poetry-core"]
