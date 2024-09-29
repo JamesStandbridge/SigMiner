@@ -14,11 +14,11 @@ SigMiner is a desktop application designed to extract metadata from emails using
 
 ## Images
 
-### API Key
-![API Key](doc/img/api_key.png)
-
 ### Auth
 ![Auth](doc/img/auth.png)
+
+### API Key
+![API Key](doc/img/api_key.png)
 
 ### Click Preferences
 ![Click Preferences](doc/img/click_preferences.png)
