@@ -105,7 +105,7 @@ class ExtractionWorker(QThread):
             field,
             "This class defines the metadata and the required format for responses.",
         )
-        query = f"Extract this metadata: {field_name}. If impossible, return null."
+        query = f"Extract this metadata: {field_name}. If impossible, return an empty string."
 
         chunks = [
             f"<email_subject>{email_subject}</email_subject>",
@@ -128,7 +128,7 @@ class ExtractionWorker(QThread):
         self.total_cost += cost
         self.meta_costs[field_name] += cost
         self.total_meta_processed += 1
-        if answer.dict().get("answer") != "null":
+        if answer.dict().get("answer") != "null" and answer.dict().get("answer") != "":
             self.total_meta_found += 1
             self.meta_non_null_counts[field_name] += 1
 
@@ -190,7 +190,7 @@ class ExtractionWorker(QThread):
 
         for field, answer in zip(self.launcher_config["fields"], answers):
             if answer and answer.dict().get("answer") not in ["null", "", "0"]:
-                results[field["field_name"]] = answer.dict().get("answer", "null")
+                results[field["field_name"]] = answer.dict().get("answer", "")
 
         self.existing_contacts[email_address] = results
         self.total_contacts_processed += 1
