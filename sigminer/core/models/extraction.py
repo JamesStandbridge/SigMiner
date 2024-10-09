@@ -1,10 +1,10 @@
 from pydantic import BaseModel
-from typing import TypedDict, List
+from typing import TypedDict, List, Optional
 
 
 class MetaResponse(BaseModel):
     meta_name: str
-    extracted_value: str
+    extracted_value: Optional[str] 
     confidence_score: float
 
 

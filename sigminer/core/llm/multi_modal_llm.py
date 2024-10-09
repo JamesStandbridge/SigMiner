@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Type, Union, TypeVar, Tuple
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from litellm import acompletion, completion_cost
 import json
 import os
@@ -42,12 +42,15 @@ class MultiModalLLM:
             response = await self._make_acompletion_call(selected_model, messages, tools, temperature)
             cost = completion_cost(response)
             return self._process_response(response, output_cls, cost)
+        except ValidationError as ve:
+            print(f"Validation error: {ve}")
+            raise
         except Exception as e:
             print(f"Query failed: {str(e)}")
             raise
 
     def _create_system_message(self) -> Dict[str, str]:
-        current_date = datetime.now().strftime("%B %d, 2023")
+        current_date = datetime.now().strftime("%B %d, %Y")
         return {
             "role": "system",
             "content": (
@@ -109,10 +112,13 @@ class MultiModalLLM:
             for tool_call in tool_calls:
                 try:
                     function_args = json.loads(tool_call.function.arguments)
+
                     validated_response = output_cls.model_validate(function_args)
                     return validated_response, cost
+                except ValidationError as ve:
+                    print(f"Validation error in tool call: {ve}")
+                    raise
                 except Exception as e:
-                    print(response)
                     print(f"Error processing tool call: {str(e)}")
                     raise
         else:
@@ -122,6 +128,7 @@ class MultiModalLLM:
             except Exception as e:
                 print(f"Error processing response message: {str(e)}")
                 raise
+
 
     def _generate_rag_prompt(
         self, prompt: str, chunks: List[str], exclude_keys: Optional[List[str]] = None

@@ -4,7 +4,7 @@ import aiofiles
 import csv
 import os
 from datetime import datetime, timedelta
-from typing import Dict, Type
+from typing import Dict, Type, Optional
 from pydantic import BaseModel, create_model, Field
 
 from sigminer.core.email.email_manager import EmailManager
@@ -88,7 +88,7 @@ class ExtractionWorker(QThread):
                 contact_filtered = {key: contact.get(key, "") for key in all_fieldnames}
                 await writer.writerow(contact_filtered)
 
-    async def process_email_meta(self, email: dict, field: FieldConfig):
+    async def process_email_meta(self, email: dict, field: FieldConfig) -> Optional[BaseModel]:
         field_name = field["field_name"]
         email_content = email.get("body", {}).get("content", "No content")
         email_subject = email.get("subject", "Unknown subject")
@@ -112,7 +112,7 @@ class ExtractionWorker(QThread):
             f"<email_content>{email_content}</email_content>",
         ]
 
-        answer, cost = await self.llm.query(
+        result = await self.llm.query(
             input_data=query,
             model=self.launcher_config["model"],
             chunks=chunks,
@@ -120,6 +120,11 @@ class ExtractionWorker(QThread):
             output_cls=MetaClass,
         )
 
+        if result is None:
+            await self.log_message(f"Query for {field_name} returned None.")
+            return None
+
+        answer, cost = result
         self.total_cost += cost
         self.meta_costs[field_name] += cost
         self.total_meta_processed += 1
@@ -184,7 +189,7 @@ class ExtractionWorker(QThread):
         answers = await asyncio.gather(*tasks)
 
         for field, answer in zip(self.launcher_config["fields"], answers):
-            if answer.dict().get("answer") not in ["null", "", "0"]:
+            if answer and answer.dict().get("answer") not in ["null", "", "0"]:
                 results[field["field_name"]] = answer.dict().get("answer", "null")
 
         self.existing_contacts[email_address] = results
