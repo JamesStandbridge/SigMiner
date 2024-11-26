@@ -1,11 +1,12 @@
-from PyQt5.QtCore import QThread, pyqtSignal
 import asyncio
-import aiofiles
 import csv
 import os
 from datetime import datetime, timedelta
-from typing import Dict, Type, Optional
-from pydantic import BaseModel, create_model, Field
+from typing import Dict, Optional, Type
+
+import aiofiles
+from pydantic import BaseModel, Field, create_model
+from PyQt5.QtCore import QThread, pyqtSignal
 
 from sigminer.core.email.email_manager import EmailManager
 from sigminer.core.llm.multi_modal_llm import MultiModalLLM
@@ -88,7 +89,9 @@ class ExtractionWorker(QThread):
                 contact_filtered = {key: contact.get(key, "") for key in all_fieldnames}
                 await writer.writerow(contact_filtered)
 
-    async def process_email_meta(self, email: dict, field: FieldConfig) -> Optional[BaseModel]:
+    async def process_email_meta(
+        self, email: dict, field: FieldConfig
+    ) -> Optional[BaseModel]:
         field_name = field["field_name"]
         email_content = email.get("body", {}).get("content", "No content")
         email_subject = email.get("subject", "Unknown subject")
@@ -181,10 +184,7 @@ class ExtractionWorker(QThread):
             for field in self.launcher_config["fields"]
             if field["field_name"] not in results
             or results[field["field_name"]] in ["", "0", "null"]
-            or (
-                field["can_be_overwritten"]
-                and results[field["field_name"]] not in ["", "0", "null"]
-            )
+            or field["can_be_overwritten"]
         ]
         answers = await asyncio.gather(*tasks)
 
