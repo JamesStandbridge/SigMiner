@@ -1,10 +1,11 @@
+from typing import TypedDict
+
 from pydantic import BaseModel
-from typing import TypedDict, List, Optional
 
 
 class MetaResponse(BaseModel):
     meta_name: str
-    extracted_value: Optional[str] 
+    extracted_value: str | None
     confidence_score: float
 
 
@@ -15,9 +16,10 @@ class FieldConfig(TypedDict):
 
 
 class LauncherConfig(TypedDict):
-    fields: List[FieldConfig]
-    excluded_hosts: List[str]
+    fields: list[FieldConfig]
+    excluded_hosts: list[str]
     include_mode: bool
     file_path: str
     max_emails: int
     model: str
+    exclusion_guideline: str | None

@@ -1,27 +1,28 @@
 import hashlib
 import json
+
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QPushButton,
-    QLabel,
     QComboBox,
-    QMessageBox,
-    QInputDialog,
-    QScrollArea,
-    QListWidget,
-    QLineEdit,
+    QDialog,
     QFileDialog,
     QFrame,
-    QDialog,
+    QHBoxLayout,
+    QInputDialog,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
     QTextEdit,
+    QVBoxLayout,
+    QWidget,
 )
-from PyQt5.QtGui import QFont
 
+from sigminer.config.config_manager import ConfigManager
 from sigminer.ui.extraction_view import ExtractionView
 from sigminer.ui.field_form_view import FieldFormView
-from sigminer.config.config_manager import ConfigManager
 
 
 class EmailView(QWidget):
@@ -104,6 +105,20 @@ class EmailView(QWidget):
         self.host_mode_switch.setCurrentIndex(0 if self.include_mode else 1)
         self.host_mode_switch.currentIndexChanged.connect(self.on_host_mode_changed)
         main_layout.addWidget(self.host_mode_switch)
+
+        # Text area for exclusion guideline
+        self.exclusion_guideline_label = QLabel("Exclusion Guideline:")
+        main_layout.addWidget(self.exclusion_guideline_label)
+
+        self.exclusion_guideline_input = QTextEdit(self)
+        self.exclusion_guideline_input.setPlaceholderText(
+            "Enter guideline for excluding emails"
+        )
+        main_layout.addWidget(self.exclusion_guideline_input)
+
+        # Label for file path selection
+        self.file_path_label = QLabel("File Path to Save Contacts:")
+        main_layout.addWidget(self.file_path_label)
 
         # Button to choose the file path
         self.file_path_button = QPushButton("Select File to Save Contacts", self)
@@ -229,10 +244,12 @@ class EmailView(QWidget):
             # Collect all the configured settings
             fields = [field_form.get_field_data() for field_form in self.field_forms]
             include_mode = self.host_mode_switch.currentIndex() == 0
+            exclusion_guideline = self.exclusion_guideline_input.toPlainText().strip()
             config_data = {
                 "fields": fields,
                 "excluded_hosts": self.excluded_hosts,
                 "include_mode": include_mode,
+                "exclusion_guideline": exclusion_guideline,
                 "file_path": self.file_path_button.text(),
                 "max_emails": (
                     int(self.max_emails_input.text())
@@ -303,11 +320,13 @@ class EmailView(QWidget):
     def save_preset(self):
         fields = [field_form.get_field_data() for field_form in self.field_forms]
         include_mode = self.host_mode_switch.currentIndex() == 0
+        exclusion_guideline = self.exclusion_guideline_input.toPlainText().strip()
 
         preset_data = {
             "fields": fields,
             "excluded_hosts": self.excluded_hosts,
             "include_mode": include_mode,
+            "exclusion_guideline": exclusion_guideline,
             "file_path": self.file_path_button.text(),  # Use button text for file path
             "max_emails": self.max_emails_input.text(),
             "model": self.model_selector.currentText(),  # Add selected model to preset
@@ -382,6 +401,10 @@ class EmailView(QWidget):
                 0 if preset_data.get("include_mode", True) else 1
             )
 
+            # Load exclusion guideline
+            exclusion_guideline = preset_data.get("exclusion_guideline", "")
+            self.exclusion_guideline_input.setPlainText(exclusion_guideline)
+
             # Load file path
             file_path = preset_data.get("file_path", "No file selected")
             self.file_path_button.setText(file_path)  # Use button text for file path
@@ -412,11 +435,13 @@ class EmailView(QWidget):
     def update_save_preset_button_visibility(self):
         fields = [field_form.get_field_data() for field_form in self.field_forms]
         include_mode = self.host_mode_switch.currentIndex() == 0
+        exclusion_guideline = self.exclusion_guideline_input.toPlainText().strip()
 
         preset_data = {
             "fields": fields,
             "excluded_hosts": self.excluded_hosts,
             "include_mode": include_mode,
+            "exclusion_guideline": exclusion_guideline,
             "model": self.model_selector.currentText(),  # Add selected model to hash calculation
         }
         current_hash = self.get_preset_hash(preset_data)
