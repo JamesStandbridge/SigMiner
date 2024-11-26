@@ -33,6 +33,7 @@ class ExtractionWorker(QThread):
         self.total_contacts_processed = 0
         self.total_meta_processed = 0
         self.total_meta_found = 0
+        self.total_emails_excluded = 0  # New metric for excluded emails
         self.meta_non_null_counts = {
             field["field_name"]: 0 for field in launcher_config["fields"]
         }
@@ -156,6 +157,25 @@ class ExtractionWorker(QThread):
         excluded_hosts = self.launcher_config["excluded_hosts"]
         include_mode = self.launcher_config["include_mode"]
 
+        # Check exclusion guideline
+        exclusion_guideline = self.launcher_config.get("exclusion_guideline")
+        email_content = email.get("body", {}).get("content", "")
+        if exclusion_guideline and exclusion_guideline.strip() and email_content:
+            query = f"Should this email be excluded based on the guideline: '{exclusion_guideline}'? Respond with True or False."
+            result = await self.llm.query(
+                input_data=query,
+                model=self.launcher_config["model"],
+                chunks=[f"<email_content>{email_content}</email_content>"],
+                images=email.get("images", []),
+                output_cls=create_model("ExclusionCheck", answer=(bool, ...)),
+            )
+            if result and result[0].dict().get("answer") is True:
+                self.total_emails_excluded += 1
+                self.total_contacts_processed += 1
+                progress = int((self.total_contacts_processed / total_emails) * 100)
+                self.progress_signal.emit(progress)
+                return
+
         if excluded_hosts:
             if include_mode and email_host not in excluded_hosts:
                 self.total_contacts_processed += 1
@@ -240,6 +260,12 @@ class ExtractionWorker(QThread):
         )
         await self.log_message(f"Total metadata processed: {self.total_meta_processed}")
         await self.log_message(f"Total metadata found: {self.total_meta_found}")
+        await self.log_message(
+            f"Total emails excluded: {self.total_emails_excluded}"
+        )  # Log excluded emails
+        await self.log_message(
+            f"Total emails included: {self.total_contacts_processed - self.total_emails_excluded}"
+        )  # Log excluded emails
 
         for field_name, count in self.meta_non_null_counts.items():
             await self.log_message(f"Total non-null values for {field_name}: {count}")
