@@ -8,4 +8,4 @@ git pull
 
 poetry install
 
-python sigminer/app.py
+poetry run python sigminer/app.py
